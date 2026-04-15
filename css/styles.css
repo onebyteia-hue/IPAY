@@ -682,3 +682,17 @@ input {
 
   overflow: hidden; /* evita desbordes */
 }
+
+.home-card .btn {
+  width: 100%;
+  margin-bottom: 12px;
+}
+@media (max-width: 600px) {
+  .home-card {
+    padding: 20px 15px;
+  }
+
+  .home-card h5 {
+    font-size: 1.1rem;
+  }
+}

@@ -229,7 +229,7 @@ export async function gameView(app) {
         <p>❤️ Corazones actuales: ${state.vidas}/${MAX_VIDAS}</p>
 
         <button class="btn" id="retry">Reintentar</button>
-        <br/><br/>
+        
         <button class="btn btn-secondary" id="exit">Salir</button>
       </div>
     `;

@@ -17,7 +17,7 @@ export function homeView(app) {
      
 
       <button class="btn" id="btn-student">ESTUDIANTE - INGRESE AQUI</button>
-      <br/><br/>
+      
       <button class="btn btn-secondary" id="btn-teacher">MAESTRO</button>
 
       <p style="margin-top:20px; font-size:18px;">
