@@ -1,0 +1,1004 @@
+{
+  "capitulo": 1,
+  "titulo": "Movimiento Rectilíneo Uniforme",
+  "niveles": [
+    {
+      "nivel": 1,
+      "titulo": "Conceptos MRU",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n1p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p2",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        },
+        {
+          "id": "c1n1p3",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad es constante.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto, no cambia."
+        },
+        {
+          "id": "c1n1p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p5",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        },
+        {
+          "id": "c1n1p6",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad es constante.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto, no cambia."
+        },
+        {
+          "id": "c1n1p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p8",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        },
+        {
+          "id": "c1n1p9",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad es constante.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto, no cambia."
+        },
+        {
+          "id": "c1n1p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p11",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        },
+        {
+          "id": "c1n1p12",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad es constante.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto, no cambia."
+        },
+        {
+          "id": "c1n1p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p14",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        },
+        {
+          "id": "c1n1p15",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad es constante.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto, no cambia."
+        },
+        {
+          "id": "c1n1p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p17",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        },
+        {
+          "id": "c1n1p18",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad es constante.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto, no cambia."
+        },
+        {
+          "id": "c1n1p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Unidad de velocidad?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "m/s es correcto.",
+          "opciones": [
+            "m/s",
+            "kg",
+            "N",
+            "s"
+          ]
+        },
+        {
+          "id": "c1n1p20",
+          "tipo": "completar",
+          "enunciado": "La fórmula es d = ___ × t",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "d = v × t",
+          "alternativasValidas": [
+            "v",
+            "v"
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": 2,
+      "titulo": "Ecuaciones MRU",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n2p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p2",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p3",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p4",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p5",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p6",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p8",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p9",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p10",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p11",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p12",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p14",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p15",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p16",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p17",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p18",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        },
+        {
+          "id": "c1n2p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué representa t?",
+          "respuestaCorrecta": "Tiempo",
+          "retroalimentacion": "t es tiempo.",
+          "opciones": [
+            "Tiempo",
+            "Distancia",
+            "Velocidad",
+            "Masa"
+          ]
+        },
+        {
+          "id": "c1n2p20",
+          "tipo": "completar",
+          "enunciado": "Despeje velocidad: v = ___",
+          "respuestaCorrecta": "d/t",
+          "retroalimentacion": "v = d/t",
+          "alternativasValidas": [
+            "d/t",
+            "d/t"
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": 3,
+      "titulo": "Problemas directos",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n3p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p2",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p3",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p5",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p6",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p8",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p9",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p11",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p12",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p14",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p15",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p17",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p18",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p20",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 100 m en 20 s. ¿Velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "100/20=5",
+          "opciones": [
+            "5 m/s",
+            "10 m/s",
+            "20 m/s",
+            "2 m/s"
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": 4,
+      "titulo": "Problemas contextualizados",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n4p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p2",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p3",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p5",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p6",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p8",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p9",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p11",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p12",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p14",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p15",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p17",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p18",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        },
+        {
+          "id": "c1n4p20",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos móviles se acercan. ¿Qué ocurre?",
+          "respuestaCorrecta": "Encuentro",
+          "retroalimentacion": "Se encuentran.",
+          "opciones": [
+            "Encuentro",
+            "Reposo",
+            "MRU",
+            "Caída"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1016 @@
+{
+  "capitulo": 1,
+  "titulo": "Movimiento Rectilíneo Uniforme",
+  "niveles": [
+    {
+      "nivel": 1,
+      "titulo": "Conceptos MRU",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n1p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué característica define al MRU?",
+          "respuestaCorrecta": "Velocidad constante",
+          "retroalimentacion": "En el MRU la velocidad no cambia con el tiempo.",
+          "opciones": [
+            "Velocidad constante",
+            "Aceleración variable",
+            "Trayectoria circular",
+            "Reposo total"
+          ]
+        },
+        {
+          "id": "c1n1p2",
+          "tipo": "verdadero_falso",
+          "enunciado": "En el MRU la aceleración es igual a cero.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto. Si la velocidad es constante, la aceleración es nula."
+        },
+        {
+          "id": "c1n1p3",
+          "tipo": "completar",
+          "enunciado": "En MRU, la distancia recorrida es igual a velocidad por ___.",
+          "respuestaCorrecta": "tiempo",
+          "retroalimentacion": "La expresión básica es d = v × t.",
+          "alternativasValidas": [
+            "tiempo",
+            "el tiempo",
+            "t"
+          ]
+        },
+        {
+          "id": "c1n1p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Cuál es la unidad de velocidad en el SI?",
+          "respuestaCorrecta": "m/s",
+          "retroalimentacion": "La velocidad en el Sistema Internacional se mide en metros por segundo.",
+          "opciones": [
+            "m/s",
+            "m",
+            "s",
+            "m/s²"
+          ]
+        },
+        {
+          "id": "c1n1p5",
+          "tipo": "verdadero_falso",
+          "enunciado": "Si un móvil recorre espacios iguales en tiempos iguales, está en MRU.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto. Esa es una condición propia del MRU."
+        },
+        {
+          "id": "c1n1p6",
+          "tipo": "completar",
+          "enunciado": "La gráfica posición-tiempo en un MRU es una línea ___.",
+          "respuestaCorrecta": "recta",
+          "retroalimentacion": "En MRU la posición cambia linealmente con el tiempo.",
+          "alternativasValidas": [
+            "recta",
+            "linea recta",
+            "línea recta"
+          ]
+        },
+        {
+          "id": "c1n1p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En un problema de alcance, ¿cómo se mueven los móviles?",
+          "respuestaCorrecta": "En la misma dirección",
+          "retroalimentacion": "En el alcance, un móvil persigue a otro en la misma dirección.",
+          "opciones": [
+            "En la misma dirección",
+            "En direcciones opuestas",
+            "En caída libre",
+            "En trayectorias circulares"
+          ]
+        },
+        {
+          "id": "c1n1p8",
+          "tipo": "verdadero_falso",
+          "enunciado": "En un encuentro, dos móviles se mueven uno hacia el otro.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto. En el encuentro los móviles parten separados y se aproximan."
+        },
+        {
+          "id": "c1n1p9",
+          "tipo": "completar",
+          "enunciado": "En un problema de alcance, para alcanzar al otro móvil se usa la velocidad ___.",
+          "respuestaCorrecta": "relativa",
+          "retroalimentacion": "La velocidad relativa permite comparar cómo uno acorta distancia respecto al otro.",
+          "alternativasValidas": [
+            "relativa",
+            "velocidad relativa"
+          ]
+        },
+        {
+          "id": "c1n1p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué sucede con la distancia entre dos móviles que se encuentran?",
+          "respuestaCorrecta": "Disminuye hasta cero",
+          "retroalimentacion": "En el encuentro la separación se reduce hasta hacerse cero.",
+          "opciones": [
+            "Disminuye hasta cero",
+            "Permanece constante",
+            "Aumenta indefinidamente",
+            "Se vuelve negativa"
+          ]
+        },
+        {
+          "id": "c1n1p11",
+          "tipo": "verdadero_falso",
+          "enunciado": "En MRU la velocidad puede cambiar de valor cada segundo.",
+          "respuestaCorrecta": false,
+          "retroalimentacion": "Falso. Si cambia la velocidad, ya no es MRU."
+        },
+        {
+          "id": "c1n1p12",
+          "tipo": "completar",
+          "enunciado": "La magnitud que indica qué tan rápido se mueve un móvil es la ___.",
+          "respuestaCorrecta": "velocidad",
+          "retroalimentacion": "La velocidad expresa la distancia recorrida por unidad de tiempo.",
+          "alternativasValidas": [
+            "velocidad",
+            "rapidez"
+          ]
+        },
+        {
+          "id": "c1n1p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué comparación es correcta entre alcance y encuentro?",
+          "respuestaCorrecta": "En alcance van en la misma dirección; en encuentro, en sentidos opuestos",
+          "retroalimentacion": "Esa es la diferencia principal entre ambos casos.",
+          "opciones": [
+            "En alcance van en la misma dirección; en encuentro, en sentidos opuestos",
+            "En ambos casos los móviles están en reposo",
+            "En alcance van en sentidos opuestos; en encuentro, igual dirección",
+            "No existe diferencia"
+          ]
+        },
+        {
+          "id": "c1n1p14",
+          "tipo": "verdadero_falso",
+          "enunciado": "El tiempo de encuentro depende de la separación inicial y de las velocidades de los móviles.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto. Ambas magnitudes intervienen en el cálculo."
+        },
+        {
+          "id": "c1n1p15",
+          "tipo": "completar",
+          "enunciado": "Si despejamos tiempo en MRU, t = d / ___.",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "A partir de d = v × t, se obtiene t = d / v.",
+          "alternativasValidas": [
+            "v",
+            "velocidad",
+            "la velocidad"
+          ]
+        },
+        {
+          "id": "c1n1p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué gráfica representa mejor un móvil en reposo en posición-tiempo?",
+          "respuestaCorrecta": "Una línea horizontal",
+          "retroalimentacion": "Si la posición no cambia, la gráfica es horizontal.",
+          "opciones": [
+            "Una línea horizontal",
+            "Una recta inclinada",
+            "Una parábola",
+            "Una circunferencia"
+          ]
+        },
+        {
+          "id": "c1n1p17",
+          "tipo": "verdadero_falso",
+          "enunciado": "La velocidad relativa de dos móviles que van uno hacia el otro se obtiene sumando sus velocidades.",
+          "respuestaCorrecta": true,
+          "retroalimentacion": "Correcto. Al acercarse, las velocidades se suman."
+        },
+        {
+          "id": "c1n1p18",
+          "tipo": "completar",
+          "enunciado": "En un problema de encuentro, la distancia inicial se hace cero en el instante del ___.",
+          "respuestaCorrecta": "encuentro",
+          "retroalimentacion": "Ese es el momento en que ambos ocupan la misma posición.",
+          "alternativasValidas": [
+            "encuentro",
+            "choque",
+            "cruce"
+          ]
+        },
+        {
+          "id": "c1n1p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Si dos móviles llevan la misma velocidad y uno va detrás del otro, ¿qué ocurre?",
+          "respuestaCorrecta": "No hay alcance",
+          "retroalimentacion": "Si tienen igual velocidad, la distancia entre ellos no cambia.",
+          "opciones": [
+            "No hay alcance",
+            "Hay encuentro inmediato",
+            "La aceleración aumenta",
+            "Se detienen"
+          ]
+        },
+        {
+          "id": "c1n1p20",
+          "tipo": "completar",
+          "enunciado": "Cuando la separación entre dos móviles disminuye con el tiempo, decimos que uno se está ___.",
+          "respuestaCorrecta": "acercando",
+          "retroalimentacion": "Eso ocurre en situaciones de alcance o encuentro.",
+          "alternativasValidas": [
+            "acercando",
+            "aproximando"
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": 2,
+      "titulo": "Ecuaciones MRU",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n2p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Si d = v × t, ¿cómo se despeja la velocidad?",
+          "respuestaCorrecta": "v = d / t",
+          "retroalimentacion": "Se divide la distancia entre el tiempo.",
+          "opciones": [
+            "v = d / t",
+            "v = t / d",
+            "v = d × t",
+            "v = d - t"
+          ]
+        },
+        {
+          "id": "c1n2p2",
+          "tipo": "completar",
+          "enunciado": "Complete: t = d / ___.",
+          "respuestaCorrecta": "v",
+          "retroalimentacion": "El tiempo se obtiene dividiendo la distancia entre la velocidad.",
+          "alternativasValidas": [
+            "v",
+            "velocidad",
+            "la velocidad"
+          ]
+        },
+        {
+          "id": "c1n2p3",
+          "tipo": "responder",
+          "enunciado": "Si un móvil recorre 60 m en 12 s, ¿qué operación haces para hallar la velocidad?",
+          "respuestaCorrecta": "60/12",
+          "retroalimentacion": "Para hallar la velocidad se divide distancia entre tiempo.",
+          "alternativasValidas": [
+            "60/12",
+            "60 ÷ 12",
+            "dividir 60 entre 12",
+            "60 entre 12"
+          ]
+        },
+        {
+          "id": "c1n2p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Qué ecuación representa un problema de alcance?",
+          "respuestaCorrecta": "distancia inicial = velocidad relativa × tiempo",
+          "retroalimentacion": "En alcance, la separación inicial se elimina con la velocidad relativa.",
+          "opciones": [
+            "distancia inicial = velocidad relativa × tiempo",
+            "masa = densidad × volumen",
+            "fuerza = masa × aceleración",
+            "potencia = trabajo / tiempo"
+          ]
+        },
+        {
+          "id": "c1n2p5",
+          "tipo": "completar",
+          "enunciado": "En alcance, la velocidad relativa se obtiene restando velocidad mayor menos velocidad ___.",
+          "respuestaCorrecta": "menor",
+          "retroalimentacion": "Al ir en la misma dirección, se resta la velocidad del móvil más lento.",
+          "alternativasValidas": [
+            "menor",
+            "más lenta",
+            "lenta"
+          ]
+        },
+        {
+          "id": "c1n2p6",
+          "tipo": "responder",
+          "enunciado": "Escribe la fórmula del tiempo usando distancia y velocidad en MRU.",
+          "respuestaCorrecta": "t=d/v",
+          "retroalimentacion": "La fórmula es t = d / v.",
+          "alternativasValidas": [
+            "t=d/v",
+            "t = d/v",
+            "t=d÷v",
+            "t = d / v"
+          ]
+        },
+        {
+          "id": "c1n2p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En un encuentro, la velocidad relativa de 8 m/s y 6 m/s es:",
+          "respuestaCorrecta": "14 m/s",
+          "retroalimentacion": "Como van uno hacia el otro, se suman las velocidades.",
+          "opciones": [
+            "14 m/s",
+            "2 m/s",
+            "48 m/s",
+            "8 m/s"
+          ]
+        },
+        {
+          "id": "c1n2p8",
+          "tipo": "completar",
+          "enunciado": "Si d = 150 m y v = 30 m/s, entonces t = ___ s.",
+          "respuestaCorrecta": "5",
+          "retroalimentacion": "t = 150 / 30 = 5 s.",
+          "alternativasValidas": [
+            "5",
+            "5.0"
+          ]
+        },
+        {
+          "id": "c1n2p9",
+          "tipo": "responder",
+          "enunciado": "¿Qué variable se despeja si usas la operación d ÷ t?",
+          "respuestaCorrecta": "velocidad",
+          "retroalimentacion": "Dividir distancia entre tiempo permite hallar la velocidad.",
+          "alternativasValidas": [
+            "velocidad",
+            "v",
+            "la velocidad"
+          ]
+        },
+        {
+          "id": "c1n2p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Si un problema pide la distancia recorrida, ¿qué expresión usas?",
+          "respuestaCorrecta": "d = v × t",
+          "retroalimentacion": "La distancia se obtiene multiplicando velocidad por tiempo.",
+          "opciones": [
+            "d = v × t",
+            "d = v / t",
+            "d = t / v",
+            "d = v + t"
+          ]
+        },
+        {
+          "id": "c1n2p11",
+          "tipo": "completar",
+          "enunciado": "En encuentro, la velocidad relativa es la ___ de las velocidades.",
+          "respuestaCorrecta": "suma",
+          "retroalimentacion": "Como los móviles se acercan, se suman sus velocidades.",
+          "alternativasValidas": [
+            "suma",
+            "adicion",
+            "adición"
+          ]
+        },
+        {
+          "id": "c1n2p12",
+          "tipo": "responder",
+          "enunciado": "Si un auto avanza a 20 m/s durante 4 s, escribe la multiplicación para hallar la distancia.",
+          "respuestaCorrecta": "20x4",
+          "retroalimentacion": "Debes multiplicar velocidad por tiempo.",
+          "alternativasValidas": [
+            "20x4",
+            "20×4",
+            "20*4",
+            "20 por 4"
+          ]
+        },
+        {
+          "id": "c1n2p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Si un móvil más rápido persigue a otro más lento, para hallar el tiempo de alcance se usa:",
+          "respuestaCorrecta": "t = distancia inicial / velocidad relativa",
+          "retroalimentacion": "Esa es la relación básica del alcance.",
+          "opciones": [
+            "t = distancia inicial / velocidad relativa",
+            "t = velocidad relativa / distancia inicial",
+            "t = distancia inicial × velocidad relativa",
+            "t = velocidad1 + velocidad2"
+          ]
+        },
+        {
+          "id": "c1n2p14",
+          "tipo": "completar",
+          "enunciado": "Si v = 18 m/s y t = 3 s, entonces d = ___ m.",
+          "respuestaCorrecta": "54",
+          "retroalimentacion": "d = 18 × 3 = 54 m.",
+          "alternativasValidas": [
+            "54",
+            "54.0"
+          ]
+        },
+        {
+          "id": "c1n2p15",
+          "tipo": "responder",
+          "enunciado": "¿Qué operación haces para hallar el tiempo de encuentro si conoces la separación inicial y la velocidad relativa?",
+          "respuestaCorrecta": "distancia/velocidad relativa",
+          "retroalimentacion": "El tiempo se obtiene dividiendo separación entre velocidad relativa.",
+          "alternativasValidas": [
+            "distancia/velocidad relativa",
+            "separacion/velocidad relativa",
+            "dividir la distancia entre la velocidad relativa",
+            "distancia inicial entre velocidad relativa"
+          ]
+        },
+        {
+          "id": "c1n2p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En la ecuación t = d / v, si d está en metros y v en m/s, el tiempo queda en:",
+          "respuestaCorrecta": "segundos",
+          "retroalimentacion": "Las unidades resultan en segundos.",
+          "opciones": [
+            "segundos",
+            "metros",
+            "m/s",
+            "newtons"
+          ]
+        },
+        {
+          "id": "c1n2p17",
+          "tipo": "completar",
+          "enunciado": "Para despejar distancia en MRU, se multiplican velocidad por ___.",
+          "respuestaCorrecta": "tiempo",
+          "retroalimentacion": "La fórmula correcta es d = v × t.",
+          "alternativasValidas": [
+            "tiempo",
+            "el tiempo",
+            "t"
+          ]
+        },
+        {
+          "id": "c1n2p18",
+          "tipo": "responder",
+          "enunciado": "Si dos móviles van en la misma dirección con 12 m/s y 7 m/s, escribe la resta para la velocidad relativa.",
+          "respuestaCorrecta": "12-7",
+          "retroalimentacion": "En alcance se restan las velocidades.",
+          "alternativasValidas": [
+            "12-7",
+            "12 - 7",
+            "12 menos 7"
+          ]
+        },
+        {
+          "id": "c1n2p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "¿Cuál de las siguientes igualdades es correcta para un encuentro?",
+          "respuestaCorrecta": "separación inicial = (v1 + v2) × t",
+          "retroalimentacion": "En encuentro la velocidad relativa es la suma.",
+          "opciones": [
+            "separación inicial = (v1 + v2) × t",
+            "separación inicial = (v1 - v2) × t",
+            "separación inicial = v1 / v2",
+            "separación inicial = t / (v1 + v2)"
+          ]
+        },
+        {
+          "id": "c1n2p20",
+          "tipo": "completar",
+          "enunciado": "Si un móvil recorre 200 m en 25 s, su velocidad es ___ m/s.",
+          "respuestaCorrecta": "8",
+          "retroalimentacion": "v = 200 / 25 = 8 m/s.",
+          "alternativasValidas": [
+            "8",
+            "8.0"
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": 3,
+      "titulo": "Problemas directos",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n3p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil recorre 120 m en 30 s. ¿Cuál es su velocidad?",
+          "respuestaCorrecta": "4 m/s",
+          "retroalimentacion": "v = 120 / 30 = 4 m/s.",
+          "opciones": [
+            "4 m/s",
+            "3 m/s",
+            "5 m/s",
+            "2 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p2",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un ciclista avanza a 6 m/s durante 8 s. ¿Qué distancia recorre?",
+          "respuestaCorrecta": "48 m",
+          "retroalimentacion": "d = 6 × 8 = 48 m.",
+          "opciones": [
+            "48 m",
+            "14 m",
+            "56 m",
+            "38 m"
+          ]
+        },
+        {
+          "id": "c1n3p3",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un auto viaja a 20 m/s y recorre 100 m. ¿Cuánto tiempo tarda?",
+          "respuestaCorrecta": "5 s",
+          "retroalimentacion": "t = 100 / 20 = 5 s.",
+          "opciones": [
+            "5 s",
+            "4 s",
+            "10 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n3p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos corredores están separados 90 m y corren uno hacia el otro con 4 m/s y 5 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "10 s",
+          "retroalimentacion": "Velocidad relativa = 4 + 5 = 9 m/s; t = 90 / 9 = 10 s.",
+          "opciones": [
+            "10 s",
+            "9 s",
+            "11 s",
+            "15 s"
+          ]
+        },
+        {
+          "id": "c1n3p5",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un motociclista va a 15 m/s y otro delante de él a 10 m/s. Si los separan 50 m, ¿en cuánto tiempo lo alcanza?",
+          "respuestaCorrecta": "10 s",
+          "retroalimentacion": "Velocidad relativa = 15 - 10 = 5 m/s; t = 50 / 5 = 10 s.",
+          "opciones": [
+            "10 s",
+            "5 s",
+            "15 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n3p6",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un tren recorre 300 m en 25 s. ¿Cuál es su velocidad?",
+          "respuestaCorrecta": "12 m/s",
+          "retroalimentacion": "v = 300 / 25 = 12 m/s.",
+          "opciones": [
+            "12 m/s",
+            "10 m/s",
+            "15 m/s",
+            "8 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Una persona camina a 2 m/s durante 40 s. ¿Qué distancia recorre?",
+          "respuestaCorrecta": "80 m",
+          "retroalimentacion": "d = 2 × 40 = 80 m.",
+          "opciones": [
+            "80 m",
+            "42 m",
+            "20 m",
+            "60 m"
+          ]
+        },
+        {
+          "id": "c1n3p8",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos autos parten desde puntos opuestos separados 140 m y se acercan con 8 m/s y 6 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "10 s",
+          "retroalimentacion": "Velocidad relativa = 8 + 6 = 14 m/s; t = 140 / 14 = 10 s.",
+          "opciones": [
+            "10 s",
+            "14 s",
+            "8 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n3p9",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un niño corre a 3 m/s durante 12 s. ¿Cuántos metros recorre?",
+          "respuestaCorrecta": "36 m",
+          "retroalimentacion": "d = 3 × 12 = 36 m.",
+          "opciones": [
+            "36 m",
+            "24 m",
+            "15 m",
+            "9 m"
+          ]
+        },
+        {
+          "id": "c1n3p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un bus se mueve a 18 m/s y recorre 216 m. ¿Cuánto tarda?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "t = 216 / 18 = 12 s.",
+          "opciones": [
+            "12 s",
+            "10 s",
+            "18 s",
+            "14 s"
+          ]
+        },
+        {
+          "id": "c1n3p11",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos ciclistas van en la misma dirección a 9 m/s y 6 m/s. Si el más rápido está 45 m detrás, ¿cuánto tarda en alcanzarlo?",
+          "respuestaCorrecta": "15 s",
+          "retroalimentacion": "Velocidad relativa = 9 - 6 = 3 m/s; t = 45 / 3 = 15 s.",
+          "opciones": [
+            "15 s",
+            "9 s",
+            "12 s",
+            "18 s"
+          ]
+        },
+        {
+          "id": "c1n3p12",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Una lancha avanza 150 m en 30 s. ¿Cuál es su velocidad?",
+          "respuestaCorrecta": "5 m/s",
+          "retroalimentacion": "v = 150 / 30 = 5 m/s.",
+          "opciones": [
+            "5 m/s",
+            "6 m/s",
+            "4 m/s",
+            "3 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos personas están separadas 72 m y caminan una hacia la otra con 2 m/s y 4 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "Velocidad relativa = 2 + 4 = 6 m/s; t = 72 / 6 = 12 s.",
+          "opciones": [
+            "12 s",
+            "18 s",
+            "9 s",
+            "6 s"
+          ]
+        },
+        {
+          "id": "c1n3p14",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un patinador recorre 63 m en 9 s. ¿Qué velocidad lleva?",
+          "respuestaCorrecta": "7 m/s",
+          "retroalimentacion": "v = 63 / 9 = 7 m/s.",
+          "opciones": [
+            "7 m/s",
+            "6 m/s",
+            "8 m/s",
+            "9 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p15",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un móvil se desplaza a 11 m/s durante 7 s. ¿Qué distancia recorre?",
+          "respuestaCorrecta": "77 m",
+          "retroalimentacion": "d = 11 × 7 = 77 m.",
+          "opciones": [
+            "77 m",
+            "74 m",
+            "67 m",
+            "87 m"
+          ]
+        },
+        {
+          "id": "c1n3p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos autos en la misma vía llevan 22 m/s y 18 m/s. Si están separados 80 m, ¿tiempo de alcance?",
+          "respuestaCorrecta": "20 s",
+          "retroalimentacion": "Velocidad relativa = 22 - 18 = 4 m/s; t = 80 / 4 = 20 s.",
+          "opciones": [
+            "20 s",
+            "16 s",
+            "18 s",
+            "22 s"
+          ]
+        },
+        {
+          "id": "c1n3p17",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un corredor tarda 6 s en recorrer 48 m. ¿Cuál es su velocidad?",
+          "respuestaCorrecta": "8 m/s",
+          "retroalimentacion": "v = 48 / 6 = 8 m/s.",
+          "opciones": [
+            "8 m/s",
+            "6 m/s",
+            "7 m/s",
+            "9 m/s"
+          ]
+        },
+        {
+          "id": "c1n3p18",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos motos parten separadas 100 m y van una hacia la otra con 12 m/s y 8 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "5 s",
+          "retroalimentacion": "Velocidad relativa = 12 + 8 = 20 m/s; t = 100 / 20 = 5 s.",
+          "opciones": [
+            "5 s",
+            "4 s",
+            "6 s",
+            "10 s"
+          ]
+        },
+        {
+          "id": "c1n3p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Una bicicleta se mueve a 4 m/s y recorre 52 m. ¿Cuánto tiempo tarda?",
+          "respuestaCorrecta": "13 s",
+          "retroalimentacion": "t = 52 / 4 = 13 s.",
+          "opciones": [
+            "13 s",
+            "12 s",
+            "14 s",
+            "15 s"
+          ]
+        },
+        {
+          "id": "c1n3p20",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un estudiante camina 96 m en 24 s. ¿Cuál es su velocidad?",
+          "respuestaCorrecta": "4 m/s",
+          "retroalimentacion": "v = 96 / 24 = 4 m/s.",
+          "opciones": [
+            "4 m/s",
+            "5 m/s",
+            "3 m/s",
+            "6 m/s"
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": 4,
+      "titulo": "Problemas contextualizados",
+      "minimoPreguntas": 10,
+      "preguntas": [
+        {
+          "id": "c1n4p1",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Desde dos pueblos separados 180 m salen al mismo tiempo dos ciclistas uno hacia el otro. Si avanzan a 7 m/s y 8 m/s, ¿cuánto tardan en encontrarse?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "La velocidad relativa es 15 m/s y t = 180 / 15 = 12 s.",
+          "opciones": [
+            "12 s",
+            "10 s",
+            "15 s",
+            "18 s"
+          ]
+        },
+        {
+          "id": "c1n4p2",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un taxi va a 24 m/s y 120 m delante de él va un minibús a 18 m/s en la misma dirección. ¿En cuánto tiempo el taxi alcanza al minibús?",
+          "respuestaCorrecta": "20 s",
+          "retroalimentacion": "Velocidad relativa = 24 - 18 = 6 m/s; t = 120 / 6 = 20 s.",
+          "opciones": [
+            "20 s",
+            "18 s",
+            "24 s",
+            "30 s"
+          ]
+        },
+        {
+          "id": "c1n4p3",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos estudiantes parten desde extremos opuestos de una cancha de 90 m y caminan uno hacia el otro con 2 m/s y 3 m/s. ¿Cuándo se encuentran?",
+          "respuestaCorrecta": "18 s",
+          "retroalimentacion": "Velocidad relativa = 5 m/s; t = 90 / 5 = 18 s.",
+          "opciones": [
+            "18 s",
+            "15 s",
+            "20 s",
+            "25 s"
+          ]
+        },
+        {
+          "id": "c1n4p4",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En una carretera, una moto viaja a 20 m/s y un camión delante de ella a 15 m/s. Si los separan 75 m, ¿en cuánto tiempo la moto lo alcanza?",
+          "respuestaCorrecta": "15 s",
+          "retroalimentacion": "Velocidad relativa = 5 m/s; t = 75 / 5 = 15 s.",
+          "opciones": [
+            "15 s",
+            "10 s",
+            "12 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n4p5",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos trenes se aproximan desde estaciones separadas 300 m. Sus velocidades son 14 m/s y 11 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "Velocidad relativa = 25 m/s; t = 300 / 25 = 12 s.",
+          "opciones": [
+            "12 s",
+            "10 s",
+            "15 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n4p6",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Una patrulla persigue a un auto que está 140 m delante. Si la patrulla va a 30 m/s y el auto a 23 m/s, ¿cuánto tarda en alcanzarlo?",
+          "respuestaCorrecta": "20 s",
+          "retroalimentacion": "Velocidad relativa = 7 m/s; t = 140 / 7 = 20 s.",
+          "opciones": [
+            "20 s",
+            "14 s",
+            "18 s",
+            "22 s"
+          ]
+        },
+        {
+          "id": "c1n4p7",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos amigos salen en bicicletas desde extremos opuestos de un parque de 132 m. Uno va a 5 m/s y el otro a 6 m/s. ¿Cuándo se cruzan?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "Velocidad relativa = 11 m/s; t = 132 / 11 = 12 s.",
+          "opciones": [
+            "12 s",
+            "11 s",
+            "13 s",
+            "14 s"
+          ]
+        },
+        {
+          "id": "c1n4p8",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En una pista, un corredor rápido va a 9 m/s y otro más lento a 5 m/s. Si el rápido está 60 m detrás, ¿cuándo lo alcanza?",
+          "respuestaCorrecta": "15 s",
+          "retroalimentacion": "Velocidad relativa = 4 m/s; t = 60 / 4 = 15 s.",
+          "opciones": [
+            "15 s",
+            "10 s",
+            "12 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n4p9",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos embarcaciones navegan una hacia la otra desde puntos separados 210 m con velocidades de 9 m/s y 6 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "14 s",
+          "retroalimentacion": "Velocidad relativa = 15 m/s; t = 210 / 15 = 14 s.",
+          "opciones": [
+            "14 s",
+            "12 s",
+            "15 s",
+            "16 s"
+          ]
+        },
+        {
+          "id": "c1n4p10",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un ciclista sale detrás de otro que le lleva 96 m de ventaja. Si avanzan a 10 m/s y 4 m/s respectivamente, ¿en cuánto tiempo lo alcanza?",
+          "respuestaCorrecta": "16 s",
+          "retroalimentacion": "Velocidad relativa = 6 m/s; t = 96 / 6 = 16 s.",
+          "opciones": [
+            "16 s",
+            "12 s",
+            "18 s",
+            "20 s"
+          ]
+        },
+        {
+          "id": "c1n4p11",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Desde dos esquinas separadas 160 m parten dos personas una hacia la otra a 3 m/s y 5 m/s. ¿Cuánto tardan en encontrarse?",
+          "respuestaCorrecta": "20 s",
+          "retroalimentacion": "Velocidad relativa = 8 m/s; t = 160 / 8 = 20 s.",
+          "opciones": [
+            "20 s",
+            "18 s",
+            "16 s",
+            "24 s"
+          ]
+        },
+        {
+          "id": "c1n4p12",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un vehículo particular viaja a 28 m/s y persigue a un bus que va a 20 m/s. Si el bus está 200 m adelante, ¿tiempo de alcance?",
+          "respuestaCorrecta": "25 s",
+          "retroalimentacion": "Velocidad relativa = 8 m/s; t = 200 / 8 = 25 s.",
+          "opciones": [
+            "25 s",
+            "20 s",
+            "22 s",
+            "30 s"
+          ]
+        },
+        {
+          "id": "c1n4p13",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos atletas corren uno hacia el otro en una pista recta de 84 m. Sus velocidades son 4 m/s y 3 m/s. ¿Cuándo se encuentran?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "Velocidad relativa = 7 m/s; t = 84 / 7 = 12 s.",
+          "opciones": [
+            "12 s",
+            "10 s",
+            "14 s",
+            "16 s"
+          ]
+        },
+        {
+          "id": "c1n4p14",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En una avenida, una camioneta va a 18 m/s y un auto delante a 12 m/s. Si hay 54 m entre ambos, ¿en cuánto tiempo se produce el alcance?",
+          "respuestaCorrecta": "9 s",
+          "retroalimentacion": "Velocidad relativa = 6 m/s; t = 54 / 6 = 9 s.",
+          "opciones": [
+            "9 s",
+            "8 s",
+            "10 s",
+            "12 s"
+          ]
+        },
+        {
+          "id": "c1n4p15",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos niños se dirigen uno hacia el otro en un patio de 70 m con velocidades de 2 m/s y 3 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "14 s",
+          "retroalimentacion": "Velocidad relativa = 5 m/s; t = 70 / 5 = 14 s.",
+          "opciones": [
+            "14 s",
+            "12 s",
+            "10 s",
+            "16 s"
+          ]
+        },
+        {
+          "id": "c1n4p16",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Una motocicleta está 110 m detrás de un automóvil. Si la moto va a 26 m/s y el auto a 21 m/s, ¿cuánto tarda en alcanzarlo?",
+          "respuestaCorrecta": "22 s",
+          "retroalimentacion": "Velocidad relativa = 5 m/s; t = 110 / 5 = 22 s.",
+          "opciones": [
+            "22 s",
+            "20 s",
+            "24 s",
+            "18 s"
+          ]
+        },
+        {
+          "id": "c1n4p17",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos buses salen desde terminales opuestas separadas 260 m y van uno hacia el otro a 9 m/s y 11 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "13 s",
+          "retroalimentacion": "Velocidad relativa = 20 m/s; t = 260 / 20 = 13 s.",
+          "opciones": [
+            "13 s",
+            "12 s",
+            "15 s",
+            "14 s"
+          ]
+        },
+        {
+          "id": "c1n4p18",
+          "tipo": "seleccion_multiple",
+          "enunciado": "En una pista, un patinador va a 8 m/s y persigue a otro que va a 5 m/s. Si la ventaja inicial es 36 m, ¿cuándo lo alcanza?",
+          "respuestaCorrecta": "12 s",
+          "retroalimentacion": "Velocidad relativa = 3 m/s; t = 36 / 3 = 12 s.",
+          "opciones": [
+            "12 s",
+            "9 s",
+            "10 s",
+            "15 s"
+          ]
+        },
+        {
+          "id": "c1n4p19",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Dos personas caminan desde extremos opuestos de un sendero de 99 m con velocidades de 4 m/s y 5 m/s. ¿Tiempo de encuentro?",
+          "respuestaCorrecta": "11 s",
+          "retroalimentacion": "Velocidad relativa = 9 m/s; t = 99 / 9 = 11 s.",
+          "opciones": [
+            "11 s",
+            "9 s",
+            "10 s",
+            "12 s"
+          ]
+        },
+        {
+          "id": "c1n4p20",
+          "tipo": "seleccion_multiple",
+          "enunciado": "Un coche policial está 64 m detrás de otro vehículo. Si sus velocidades son 18 m/s y 14 m/s en la misma dirección, ¿en cuánto tiempo lo alcanza?",
+          "respuestaCorrecta": "16 s",
+          "retroalimentacion": "Velocidad relativa = 4 m/s; t = 64 / 4 = 16 s.",
+          "opciones": [
+            "16 s",
+            "12 s",
+            "14 s",
+            "18 s"
+          ]
+        }
+      ]
+    }
+  ]
+}
