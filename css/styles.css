@@ -675,7 +675,7 @@ input {
   justify-content: center;
   align-items: center;
 
-  background-image: url("/assets/images/logo.png");
+  background-image: url("../assets/images/logo.png");
   background-size: cover;        /* 🔥 llena pantalla */
   background-position: center;
   background-repeat: no-repeat;

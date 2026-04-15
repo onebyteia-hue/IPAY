@@ -5,6 +5,7 @@ export function homeView(app) {
 
   app.innerHTML = `
   <div class="home-bg-wrapper">  <!-- 🔥 NUEVO CONTENEDOR -->
+  
   <div class="home-background">
     <div class="card home-card">
     
