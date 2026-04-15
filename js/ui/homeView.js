@@ -4,20 +4,16 @@ export function homeView(app) {
   app.classList.remove("teacher-view");
 
   app.innerHTML = `
-    <div class="card home-card ">
+  <div class="home-bg-wrapper">  <!-- 🔥 NUEVO CONTENEDOR -->
+  <div class="home-background">
+    <div class="card home-card">
     
       <h1>⚡ IPAY</h1>
       <h5 style="margin-top:15px; font-size:25px;">
-       Imanarninchikwan Pachakallpachakymanta Yachanachik 
-       </h5>
+       Imanarninchikwan Pachakallpachakamaymanta Yachanachik 
+      </h5>
 
-      <div class="logo-container">
-  <img
-    class="home-logo"
-    src="./assets/images/logo.png"
-    alt="Logo IPAY"
-  />
-</div>
+     
 
       <button class="btn" id="btn-student">ESTUDIANTE - INGRESE AQUI</button>
       <br/><br/>
@@ -29,21 +25,29 @@ export function homeView(app) {
       <p style="margin-top:20px; font-size:12px;">
         Se prohibe la copia y distribucion de este material educativo.
       </p>
-    </div>
-  `;
 
-  document.getElementById("btn-student")
+    </div>
+  </div>
+  </div>
+`;
+
+  document
+    .getElementById("btn-student")
     .addEventListener("click", () => navigate("student"));
 
-  document.getElementById("btn-teacher")
-  .addEventListener("click", () => {
-
+  document.getElementById("btn-teacher").addEventListener("click", () => {
     const code = prompt("Ingrese código maestro:");
 
-    if (code === "miler123") {
+    if (code === "admin123") {
       navigate("teacher");
     } else {
       alert("Código incorrecto ❌");
     }
   });
+}
+
+
+export function resetAppStyles(app) {
+  app.classList.remove("home-bg");
+  app.classList.remove("teacher-view");
 }

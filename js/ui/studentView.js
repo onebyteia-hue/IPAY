@@ -11,12 +11,45 @@ import { getState } from "../modules/gameState.js";
 import { exportarProgreso } from "../modules/utils.js";
 import { backButton, activarBack } from "./components/backButton.js";
 
+import { obtenerUsuarios } from "../services/firestoreService.js";
+
 export async function studentView(app) {
   app.classList.remove("teacher-view");
 
   let users = getLocalUsers().map((user) => recoverLives(user));
   users = await Promise.all(users.map((user) => sincronizarUsuario(user)));
   saveLocalUsers(users);
+
+  // 🔥 NUEVO: cargar también desde Firestore
+  try {
+    const firebaseUsers = await obtenerUsuarios();
+
+    // combinar sin duplicar
+    const usersMap = new Map();
+
+    // primero los actuales (local + sync)
+    users.forEach((u) => {
+      const key = u.id || `${u.nombre}-${u.curso}`;
+      usersMap.set(key, u);
+    });
+
+    // luego los de firebase
+    firebaseUsers.forEach((u) => {
+      const key = u.id || `${u.nombre}-${u.curso}`;
+
+      // solo añade si no existe
+      if (!usersMap.has(key)) {
+        usersMap.set(key, u);
+      }
+    });
+
+    users = Array.from(usersMap.values());
+
+    saveLocalUsers(users);
+  } catch (error) {
+    console.error("Error cargando usuarios de Firestore:", error);
+  }
+
   let cursoActivo = "Todos";
   let filtroNombre = "";
 
@@ -58,7 +91,11 @@ export async function studentView(app) {
     .addEventListener("click", () => navigate("map"));
 
   function obtenerCursos() {
-    const cursos = [...new Set(users.map((user) => (user.curso || "Sin curso").trim() || "Sin curso"))];
+    const cursos = [
+      ...new Set(
+        users.map((user) => (user.curso || "Sin curso").trim() || "Sin curso"),
+      ),
+    ];
     return cursos.sort((a, b) => a.localeCompare(b));
   }
 
@@ -82,9 +119,13 @@ export async function studentView(app) {
 
     courseList.innerHTML = cursos
       .map((curso) => {
-        const total = curso === "Todos"
-          ? users.length
-          : users.filter((user) => ((user.curso || "Sin curso").trim() || "Sin curso") === curso).length;
+        const total =
+          curso === "Todos"
+            ? users.length
+            : users.filter(
+                (user) =>
+                  ((user.curso || "Sin curso").trim() || "Sin curso") === curso,
+              ).length;
 
         return `
           <button class="course-chip ${curso === cursoActivo ? "active" : ""}" data-curso="${curso}">
@@ -325,10 +366,10 @@ export async function studentView(app) {
     }
 
     usuariosFiltrados.forEach((u) => {
-        const li = document.createElement("li");
-        li.className = "student-list-item";
+      const li = document.createElement("li");
+      li.className = "student-list-item";
 
-        li.innerHTML = `
+      li.innerHTML = `
   <button class="btn btn-secondary student-btn">
     <span class="student-name">${u.nombre}</span>
     <span class="student-course-badge">${u.curso || "Sin curso"}</span>
@@ -336,9 +377,11 @@ export async function studentView(app) {
   </button>
 `;
 
-        li.addEventListener("click", () => navigate("student-profile", { user: u }));
+      li.addEventListener("click", () =>
+        navigate("student-profile", { user: u }),
+      );
 
-        list.appendChild(li);
+      list.appendChild(li);
     });
   }
 

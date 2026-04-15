@@ -578,7 +578,7 @@ input {
 
 @media (max-width: 640px) {
   #app {
-    align-items: flex-start;
+    align-items: center;
     padding: 12px;
   }
 
@@ -662,12 +662,23 @@ input {
   width: fit-content;
 }
 
-.home-logo {
-  width: 200px; /* 🔥 aumenta tamaño */
-  max-width: 100%;
-  border-radius: 12px; /* redondea ligeramente la imagen */
-}
-.logo-container:hover {
-  transform: scale(1.05);
-  transition: 0.3s ease;
+
+
+.home-bg-wrapper {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;   /* fallback */
+  min-height: 100dvh;  /* 🔥 solución moderna (móviles) */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("/assets/images/logo.png");
+  background-size: cover;        /* 🔥 llena pantalla */
+  background-position: center;
+  background-repeat: no-repeat;
+
+  overflow: hidden; /* evita desbordes */
 }
