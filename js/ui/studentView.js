@@ -4,7 +4,7 @@ import {
   eliminarUsuario,
 } from "../services/firestoreService.js";
 import { saveLocalUsers, getLocalUsers } from "../services/storageService.js";
-import { MAX_VIDAS, recoverLives } from "../services/lifeService.js";
+import { getLivesReal, getTiempoRestante } from "../modules/gameState.js";
 
 import { navigate } from "../modules/router.js";
 import { getState } from "../modules/gameState.js";
@@ -13,42 +13,41 @@ import { backButton, activarBack } from "./components/backButton.js";
 
 import { obtenerUsuarios } from "../services/firestoreService.js";
 
+import { escucharUsuariosRealtime } from "../services/firestoreService.js";
+
 export async function studentView(app) {
   app.classList.remove("teacher-view");
 
-  let users = getLocalUsers().map((user) => recoverLives(user));
-  users = await Promise.all(users.map((user) => sincronizarUsuario(user)));
-  saveLocalUsers(users);
+  // let users = [];
 
-  // 🔥 NUEVO: cargar también desde Firestore
-  try {
-    const firebaseUsers = await obtenerUsuarios();
+  // // 🔥 NUEVO: cargar también desde Firestore
+  // try {
+  //   const firebaseUsers = await obtenerUsuarios();
 
-    // combinar sin duplicar
-    const usersMap = new Map();
+  //   // 🔥 FIRESTORE ES LA FUENTE PRINCIPAL
+  //   users = firebaseUsers;
 
-    // primero los actuales (local + sync)
-    users.forEach((u) => {
-      const key = u.id || `${u.nombre}-${u.curso}`;
-      usersMap.set(key, u);
-    });
+  //   // 🔥 guardar como cache local
+  //   saveLocalUsers(users);
+  // } catch (error) {
+  //   console.error("Error cargando desde Firebase:", error);
 
-    // luego los de firebase
-    firebaseUsers.forEach((u) => {
-      const key = u.id || `${u.nombre}-${u.curso}`;
+  //   // 🔥 fallback SOLO si falla internet
+  //   users = getLocalUsers();
+  // }
 
-      // solo añade si no existe
-      if (!usersMap.has(key)) {
-        usersMap.set(key, u);
-      }
-    });
+  let users = [];
 
-    users = Array.from(usersMap.values());
+  // 🔥 SUSCRIPCIÓN EN TIEMPO REAL
+  const unsubscribe = escucharUsuariosRealtime((firebaseUsers) => {
+    users = firebaseUsers;
 
+    // cache local opcional
     saveLocalUsers(users);
-  } catch (error) {
-    console.error("Error cargando usuarios de Firestore:", error);
-  }
+
+    renderCursos();
+    renderList();
+  });
 
   let cursoActivo = "Todos";
   let filtroNombre = "";
@@ -163,13 +162,20 @@ export async function studentView(app) {
   function crearTarjetaAdmin(user) {
     const item = document.createElement("li");
     item.className = "admin-student-item";
+
+    const userId = user.id || user.nombre;
+
     item.innerHTML = `
-      <div class="admin-student-info">
-        <strong>${user.nombre}</strong>
-        <span>${user.curso || "Sin curso"} | Nivel ${user.nivel ?? 1} | ❤️ ${user.vidas ?? MAX_VIDAS}</span>
-      </div>
-      <button class="btn btn-danger" type="button">Eliminar</button>
-    `;
+    <div class="admin-student-info">
+      <strong>${user.nombre}</strong>
+      <span>
+        ${user.curso || "Sin curso"} | 
+        Nivel ${user.nivel ?? 1} | 
+        ❤️ ${getLivesReal(userId)}
+      </span>
+    </div>
+    <button class="btn btn-danger" type="button">Eliminar</button>
+  `;
 
     item.querySelector(".btn-danger").addEventListener("click", async () => {
       const ok = confirm(`¿Eliminar a ${user.nombre}?`);
@@ -183,11 +189,6 @@ export async function studentView(app) {
       renderCursos();
       renderList();
       item.remove();
-
-      const adminSearch = document.getElementById("admin-student-search");
-      if (adminSearch) {
-        adminSearch.dispatchEvent(new Event("input"));
-      }
     });
 
     return item;
@@ -275,7 +276,7 @@ export async function studentView(app) {
         curso,
         nivel: 1,
         monedas: 0,
-        vidas: MAX_VIDAS,
+        vidas: 10,
         progreso: {},
         ultimoTiempoVida: Date.now(),
       };
@@ -346,44 +347,63 @@ export async function studentView(app) {
     passwordInput.focus();
   }
 
+  let usuariosCache = [];
+
   function renderList() {
     const usuariosFiltrados = obtenerUsuariosFiltrados();
+    usuariosCache = usuariosFiltrados;
+
     list.innerHTML = "";
     summary.innerHTML = `
-      <div class="student-summary-card">
-        <strong>${cursoActivo}</strong>
-        <span>${usuariosFiltrados.length} estudiante(s) visibles</span>
-      </div>
-    `;
+    <div class="student-summary-card">
+      <strong>${cursoActivo}</strong>
+      <span>${usuariosFiltrados.length} estudiante(s) visibles</span>
+    </div>
+  `;
 
     if (usuariosFiltrados.length === 0) {
       list.innerHTML = `
-        <li class="student-empty-state">
-          No se encontraron estudiantes con ese filtro.
-        </li>
-      `;
+      <li class="student-empty-state">
+        No se encontraron estudiantes con ese filtro.
+      </li>
+    `;
       return;
     }
 
     usuariosFiltrados.forEach((u) => {
+      const userId = u.id || u.nombre;
+
       const li = document.createElement("li");
       li.className = "student-list-item";
 
       li.innerHTML = `
-  <button class="btn btn-secondary student-btn">
-    <span class="student-name">${u.nombre}</span>
-    <span class="student-course-badge">${u.curso || "Sin curso"}</span>
-    <span class="student-meta">⭐ Nivel: ${u.nivel} | 💰 ${u.monedas} | ❤️ ${u.vidas ?? MAX_VIDAS}</span>
-  </button>
-`;
+      <button class="btn btn-secondary student-btn">
+        <span class="student-name">${u.nombre}</span>
+        <span class="student-course-badge">${u.curso || "Sin curso"}</span>
+        
+        <span class="student-meta">
+          ⭐ Nivel: ${u.nivel} | 💰 ${u.monedas} | 
+          ❤️ <span class="vidas" data-id="${userId}"></span> |
+          ⏳ <span class="timer" data-id="${userId}"></span>
+        </span>
+      </button>
+    `;
 
-      li.addEventListener("click", () =>
-        navigate("student-profile", { user: u }),
-      );
+      li.addEventListener("click", () => {
+        clearInterval(intervalLista);
+        navigate("student-profile", { user: u });
+      });
 
       list.appendChild(li);
     });
+
+    // 🔥 actualización inicial
+    actualizarVidasLista(usuariosCache);
   }
+
+  const intervalLista = setInterval(() => {
+    actualizarVidasLista(usuariosCache);
+  }, 1000);
 
   searchInput.addEventListener("input", (event) => {
     filtroNombre = event.target.value;
@@ -400,4 +420,46 @@ export async function studentView(app) {
     exportarProgreso(getState());
   };
   activarBack("home");
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".back-button")) {
+      clearInterval(intervalLista);
+    }
+  });
+
+  function actualizarVidasLista(usuarios) {
+    usuarios.forEach((u) => {
+      const userId = u.id || u.nombre;
+
+      const key = `corazones_${userId}`;
+
+      // 🔥 inicializar si no existe
+      if (localStorage.getItem(key) === null) {
+        localStorage.setItem(key, u.vidas ?? 10);
+      }
+
+      const vidas = getLivesReal(userId);
+      const restante = getTiempoRestante(userId);
+
+      const min = Math.floor(restante / 60000);
+      const sec = Math.floor((restante % 60000) / 1000);
+
+      document.querySelectorAll(`.vidas[data-id="${userId}"]`).forEach((el) => {
+        el.textContent = vidas;
+      });
+
+      document.querySelectorAll(`.timer[data-id="${userId}"]`).forEach((el) => {
+        el.textContent =
+          vidas >= 10 ? "❤️" : `${min}:${sec.toString().padStart(2, "0")}`;
+      });
+    });
+  }
 }
+
+
+
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".back-button")) {
+    unsubscribe(); // 🔥 DETENER ESCUCHA
+    clearInterval(intervalLista);
+  }
+});

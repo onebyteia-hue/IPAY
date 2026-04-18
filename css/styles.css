@@ -696,3 +696,11 @@ input {
     font-size: 1.1rem;
   }
 }
+.game-img {
+  width: 150%;          /* 🔥 ocupa todo el ancho disponible */
+  max-width: 600px;     /* 🔥 límite en pantallas grandes */
+  height: auto;         /* mantiene proporción */
+  border-radius: 12px;
+  margin: 15px auto;
+  display: block;
+}

@@ -11,6 +11,11 @@ import {
   deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+import {
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 // ============================
 // 👤 USUARIOS
 // ============================
@@ -32,7 +37,14 @@ export async function obtenerUsuarios() {
 }
 
 export async function actualizarUsuario(id, data) {
-  await updateDoc(doc(db, "user_fisica", id), data);
+  const dataLimpia = {
+    nivel: Number(data.nivel) || 1,
+    monedas: Number(data.monedas) || 0,
+    vidas: Number(data.vidas) || 0,
+    progreso: data.progreso || {},
+  };
+
+  await updateDoc(doc(db, "user_fisica", id), dataLimpia);
 }
 
 export async function eliminarUsuario(id) {
@@ -41,24 +53,45 @@ export async function eliminarUsuario(id) {
 
 export async function sincronizarUsuario(user) {
   try {
+    const userData = {
+      nombre: user.nombre,
+      curso: user.curso,
+      nivel: Number(user.nivel) || 1,
+      monedas: Number(user.monedas) || 0,
+      vidas: Number(user.vidas) || 10,
+      progreso: user.progreso || {},
+    };
+
+    // 🔥 CASO 1: tiene ID → actualizar
     if (user.id) {
-      await actualizarUsuario(user.id, user);
-      return user;
+      try {
+        await updateDoc(doc(db, "user_fisica", user.id), userData);
+        return { ...user, ...userData };
+      } catch (error) {
+        console.warn("⚠️ No existe doc, creando uno nuevo...");
+      }
     }
 
+    // 🔥 CASO 2: buscar por nombre + curso
     const usuarios = await obtenerUsuarios();
-    const existente = usuarios.find((item) =>
-      item.nombre === user.nombre && item.curso === user.curso
+
+    const existente = usuarios.find(
+      (u) =>
+        u.nombre === user.nombre &&
+        u.curso === user.curso
     );
 
     if (existente) {
-      await actualizarUsuario(existente.id, user);
-      return { ...user, id: existente.id };
+      await updateDoc(doc(db, "user_fisica", existente.id), userData);
+      return { ...userData, id: existente.id };
     }
 
-    return await guardarUsuario(user);
+    // 🔥 CASO 3: crear nuevo
+    const nuevo = await guardarUsuario(userData);
+    return nuevo;
+
   } catch (error) {
-    console.error("Error al sincronizar usuario:", error);
+    console.error("❌ Error sincronizando:", error);
     return user;
   }
 }
@@ -80,4 +113,18 @@ export async function actualizarPregunta(id, data) {
 // 🗑️ ELIMINAR
 export async function eliminarPregunta(id) {
   await deleteDoc(doc(db, "preguntas_fisica", id));
+}
+export function escucharUsuariosRealtime(callback) {
+  const colRef = collection(db, "user_fisica");
+
+  return onSnapshot(colRef, (snapshot) => {
+    const usuarios = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    callback(usuarios);
+  }, (error) => {
+    console.error("Error en tiempo real:", error);
+  });
 }

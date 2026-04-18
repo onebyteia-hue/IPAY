@@ -1,6 +1,6 @@
 import { navigate } from "../modules/router.js";
 import { getState, setUser, TOTAL_LEVELS } from "../modules/gameState.js";
-import { MAX_VIDAS, recoverLives, TIEMPO_POR_VIDA_MS } from "../services/lifeService.js";
+import { getLivesReal, getTiempoRestante } from "../modules/gameState.js";
 
 function construirResumenProgreso(user) {
   const niveles = Array.from({ length: TOTAL_LEVELS }, (_, index) => index + 1);
@@ -12,7 +12,9 @@ function construirResumenProgreso(user) {
       const completado = progresoNivel.completado || nivel < user.nivel;
       const estado = completado ? "Completado" : "Pendiente";
       const intentos = progresoNivel.intentos;
-      const intentosTexto = Number.isFinite(intentos) ? intentos : "No registrado";
+      const intentosTexto = Number.isFinite(intentos)
+        ? intentos
+        : "No registrado";
 
       return `
         <div class="student-progress-item">
@@ -34,7 +36,9 @@ export function studentProfileView(app, data = {}) {
   app.classList.remove("teacher-view");
 
   const state = getState();
-  const user = recoverLives(data.user || state.currentUser);
+  const user = data.user || state.currentUser;
+  setUser(user);
+  localStorage.setItem("vidas", user.vidas);
 
   if (!user) {
     navigate("student");
@@ -42,14 +46,17 @@ export function studentProfileView(app, data = {}) {
   }
 
   const progresoHtml = construirResumenProgreso(user);
-  const tiempoRestanteMs = user.vidas >= MAX_VIDAS
-    ? 0
-    : Math.max(0, TIEMPO_POR_VIDA_MS - (Date.now() - (Number(user.ultimoTiempoVida) || Date.now())));
-  const minutos = Math.floor(tiempoRestanteMs / 60000);
-  const segundos = Math.floor((tiempoRestanteMs % 60000) / 1000);
-  const siguienteVidaTexto = user.vidas >= MAX_VIDAS
-    ? "Corazones completos"
-    : `Siguiente corazon en ${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+  const userId = user.id || user.nombre;
+  const vidasActuales = getLivesReal(userId);
+  const restante = getTiempoRestante(userId);
+
+  const min = Math.floor(restante / 60000);
+  const sec = Math.floor((restante % 60000) / 1000);
+
+  const siguienteVidaTexto =
+    vidasActuales >= 10
+      ? "Corazones completos ❤️"
+      : `Siguiente corazón en ${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 
   app.innerHTML = `
     <div class="student-profile-page">
@@ -69,8 +76,15 @@ export function studentProfileView(app, data = {}) {
           <p><strong>Curso:</strong> ${user.curso || "No registrado"}</p>
           <p><strong>Nivel actual:</strong> ${user.nivel ?? 1}</p>
           <p><strong>Monedas:</strong> ${user.monedas ?? 0}</p>
-          <p><strong>Corazones:</strong> ${user.vidas ?? MAX_VIDAS}/${MAX_VIDAS}</p>
-          <p><strong>Recuperacion:</strong> ${siguienteVidaTexto}</p>
+          <p>
+  <strong>Corazones:</strong> 
+  <span id="vidas">${vidasActuales}</span>/10
+</p>
+
+<p>
+  <strong>Recuperación:</strong> 
+  <span id="timer">${siguienteVidaTexto}</span>
+</p>
         </div>
         <button class="btn" id="play">Comenzar a jugar</button>
         <br/><br/>
@@ -88,12 +102,39 @@ export function studentProfileView(app, data = {}) {
     </div>
   `;
 
+  const intervalPerfil = setInterval(() => {
+    const vidas = getLivesReal(userId);
+    const restante = getTiempoRestante(userId);
+
+    const min = Math.floor(restante / 60000);
+    const sec = Math.floor((restante % 60000) / 1000);
+
+    const vidasEl = document.getElementById("vidas");
+    const timerEl = document.getElementById("timer");
+
+    if (vidasEl) vidasEl.textContent = vidas;
+
+    if (timerEl) {
+      timerEl.textContent =
+        vidas >= 10
+          ? "Corazones completos ❤️"
+          : `${min}:${sec.toString().padStart(2, "0")}`;
+    }
+  }, 1000);
+
   document.getElementById("play").onclick = () => {
-    setUser(user);
+    clearInterval(intervalPerfil);
+
+    if (getLivesReal(userId) <= 0) {
+      alert("💀 Sin corazones. Espera a que se recarguen ⏳");
+      return;
+    }
+
     navigate("game");
   };
 
   document.getElementById("back-top").onclick = () => {
+    clearInterval(intervalPerfil);
     navigate("student");
   };
 }

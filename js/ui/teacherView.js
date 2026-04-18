@@ -101,7 +101,7 @@ export async function teacherView(app) {
 
   document.getElementById("btn-img").onclick = () => {
 
-    const imagenes = ["a1.png", "a2.jpg", "a3.jpg", "a4.jpg", "a5.jpg", "a6.jpg", "a7.jpg", "a8.jpg", "a9.jpg", "a10.jpg",
+    const imagenes = ["a1.jpg", "a2.png", "a3.png", "a4.png", "a5.png", "a6.png", "a7.png", "a8.jpg", "a9.jpg", "a10.jpg",
                       "a11.jpg", "a12.jpg", "a13.jpg", "a14.jpg", "a15.jpg", "a16.jpg", "a17.jpg", "a18.jpg", "a19.jpg", "a20.jpg",
                       "a21.jpg", "a22.jpg", "a23.jpg", "a24.jpg", "a25.jpg", "a26.jpg", "a27.jpg", "a28.jpg", "a29.jpg", "a30.jpg",
                       "a31.jpg", "a32.jpg", "a33.jpg", "a34.jpg", "a35.jpg", "a36.jpg", "a37.jpg", "a38.jpg", "a39.jpg", "a40.jpg",

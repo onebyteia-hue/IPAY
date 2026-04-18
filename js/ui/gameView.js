@@ -3,18 +3,49 @@ import {
   updateLives,
   updateCoins,
   updateProgress,
-  persistCurrentUser
+  persistCurrentUser,
 } from "../modules/gameState.js";
 import { navigate } from "../modules/router.js";
 import { obtenerPreguntas } from "../services/firestoreService.js";
 import { getRandomQuestions } from "../modules/utils.js";
-import { MAX_VIDAS, spendLife } from "../services/lifeService.js";
+
 import { getLocalQuestions } from "../services/storageService.js";
 
 import { ProgressBar } from "./components/progressBar.js";
 
+import {
+  getTiempoRestante,
+  getLivesReal,
+  loseLife,
+} from "../modules/gameState.js";
+
 export async function gameView(app) {
   const state = getState();
+  const userId = state.currentUser?.id || state.currentUser?.nombre; // ✅ AQUÍ
+
+  let intervalVidas; // 🔥 declarar arriba
+
+  intervalVidas = setInterval(() => {
+    const el = document.getElementById("timer");
+    if (!el) {
+      clearInterval(intervalVidas);
+      return;
+    }
+
+    const restante = getTiempoRestante(userId);
+
+    const min = Math.floor(restante / 60000);
+    const sec = Math.floor((restante % 60000) / 1000);
+
+    el.textContent =
+      restante > 0 ? `${min}:${sec.toString().padStart(2, "0")}` : "Listo ❤️";
+  }, 1000);
+
+  // 🔥 BLOQUEO REAL
+  if (getLivesReal(userId) <= 0) {
+    mostrarSinVidasBloqueo(app);
+    return;
+  }
   const nivelActual = Number(state.nivel || state.currentUser?.nivel || 1);
 
   function volverAlPerfil() {
@@ -22,7 +53,7 @@ export async function gameView(app) {
       navigate("student-profile", { user: state.currentUser });
       return;
     }
-
+    clearInterval(intervalVidas);
     navigate("student");
   }
 
@@ -34,14 +65,18 @@ export async function gameView(app) {
     preguntas = getLocalQuestions();
 
     if (!preguntas.length) {
-      alert("No se pudieron cargar preguntas desde internet ni desde almacenamiento local.");
+      alert(
+        "No se pudieron cargar preguntas desde internet ni desde almacenamiento local.",
+      );
       return volverAlPerfil();
     }
 
     alert("Sin conexion: se usaran las preguntas guardadas localmente.");
   }
 
-  let preguntasNivel = preguntas.filter((pregunta) => Number(pregunta.nivel) === nivelActual);
+  let preguntasNivel = preguntas.filter(
+    (pregunta) => Number(pregunta.nivel) === nivelActual,
+  );
 
   if (preguntasNivel.length === 0) {
     alert(`No hay preguntas registradas para el nivel ${nivelActual}.`);
@@ -76,17 +111,26 @@ export async function gameView(app) {
 
     <p>${p.enunciado}</p>
 
-    ${p.imagen ? `<img src="./assets/images/${p.imagen}" width="150"/>` : ""}
+    ${p.imagen ? `<img class="game-img" src="./assets/images/${p.imagen}" />` : ""}
 
     <div id="options">
-      ${p.opciones.map((op, i) => `
+      ${p.opciones
+        .map(
+          (op, i) => `
         <button class="btn option" data-i="${i}">
           ${op}
         </button>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </div>
 
-    <p>❤️ Te quedan ${state.vidas} oportunidades</p>
+    <p>
+  ❤️ Te quedan <span id="vidas">${getLivesReal(userId)}</span> corazones
+</p>
+<p>
+  ⏳ Recuperación en: <span id="timer">--:--</span>
+</p>
     <button class="btn btn-secondary" id="finish-attempt">Terminar intento</button>
   </div>
 `;
@@ -124,33 +168,25 @@ export async function gameView(app) {
   }
 
   function perderVida() {
-    const userActualizado = spendLife(state.currentUser || { vidas: state.vidas }, 1);
-    let vidas = userActualizado.vidas;
-
-    if (state.currentUser) {
-      state.currentUser.ultimoTiempoVida = userActualizado.ultimoTiempoVida;
-    }
+    const vidas = loseLife(userId); // 🔥 ÚNICO SISTEMA
 
     if (vidas <= 0) {
-      vidas = 0;
-      updateLives(vidas);
+      updateLives(0);
       registrarIntento(0);
       intentoCerrado = true;
-      iniciarCooldown();
-      document.querySelectorAll(".option").forEach((optionButton) => {
-        optionButton.disabled = true;
+
+      document.querySelectorAll(".option").forEach((btn) => {
+        btn.disabled = true;
       });
+
       mostrarSinVidasModal();
       return true;
     }
 
     updateLives(vidas);
     persistCurrentUser();
-    return false;
-  }
 
-  function iniciarCooldown() {
-    localStorage.setItem("cooldown", Date.now());
+    return false;
   }
 
   function terminarIntento() {
@@ -216,6 +252,7 @@ export async function gameView(app) {
 
     updateCoins(state.monedas + monedas);
     registrarIntento(estrellas);
+    clearInterval(intervalVidas);
 
     app.innerHTML = `
       <div class="card">
@@ -226,7 +263,7 @@ export async function gameView(app) {
         <p>Correctas: ${correctas}/10</p>
         <p>⭐ Estrellas obtenidas: ${estrellas}</p>
         <p>💰 Monedas ganadas: ${monedas}</p>
-        <p>❤️ Corazones actuales: ${state.vidas}/${MAX_VIDAS}</p>
+        <p>❤️ Corazones actuales: ${getLivesReal(userId)}/10</p>
 
         <button class="btn" id="retry">Reintentar</button>
         
@@ -241,8 +278,74 @@ export async function gameView(app) {
   function registrarIntento(estrellas) {
     if (intentoRegistrado) return;
 
-    updateProgress(nivelActual, estrellas, 1);
-    persistCurrentUser();
+    const nivelAntes = getState().nivel;
+
+    // 🔥 IMPORTANTE: usar "correctas", NO estrellas
+    updateProgress(nivelActual, correctas, 1);
+
+    const nivelDespues = getState().nivel;
+
+    // 🎉 detectar subida de nivel
+    if (nivelDespues > nivelAntes) {
+      mostrarSubidaNivel(nivelDespues);
+    }
+
+    
     intentoRegistrado = true;
   }
+
+  
+
+  function mostrarSinVidasBloqueo(app) {
+    app.innerHTML = `
+    <div class="card">
+      <h2>💀 Sin corazones</h2>
+      <p>No tienes corazones disponibles.</p>
+      <p>Intenta nuevamente en 
+        <span id="timer">--:--</span> segundos ⏳
+      </p>
+
+      <button class="btn" id="volver">Volver</button>
+    </div>
+  `;
+
+    const interval = setInterval(() => {
+      const el = document.getElementById("timer");
+      if (!el) {
+        clearInterval(interval);
+        return;
+      }
+
+      const restante = getTiempoRestante(userId);
+
+      const min = Math.floor(restante / 60000);
+      const sec = Math.floor((restante % 60000) / 1000);
+
+      el.textContent =
+        restante > 0 ? `${min}:${sec.toString().padStart(2, "0")}` : "Listo ❤️";
+    }, 1000);
+
+    document.getElementById("volver").onclick = () => {
+      clearInterval(intervalVidas);
+      navigate("student");
+    };
+  }
+}
+
+function mostrarSubidaNivel(nivel) {
+  const modal = document.createElement("div");
+
+  modal.innerHTML = `
+    <div class="student-modal-overlay">
+      <div class="card">
+        <h2>🎉 Nivel ${nivel}</h2>
+        <p>¡Has desbloqueado el siguiente nivel!</p>
+        <button class="btn" id="ok">Continuar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.querySelector("#ok").onclick = () => modal.remove();
 }
