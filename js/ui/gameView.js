@@ -91,12 +91,14 @@ export async function gameView(app) {
   let correctas = 0;
   let intentoRegistrado = false;
   let intentoCerrado = false;
-
+  let bloqueado = false; // 🔥 evita múltiples clics
   renderPregunta();
 
   function renderPregunta() {
+    bloqueado = false; // 🔥 permite responder nueva pregunta
     const total = preguntasJuego.length;
     const actual = index + 1;
+    
 
     if (index >= preguntasJuego.length) {
       return finalizarJuego();
@@ -111,11 +113,11 @@ export async function gameView(app) {
 
   ${ProgressBar({ actual, total })}
 
-    ${ProgressBar({ actual, total })}
+    
 
     <h3>Pregunta ${actual}/${total}</h3>
 
-    <p>${p.enunciado}</p>
+    <p class="question-text">${p.enunciado}</p>
 
     ${p.imagen ? `<img class="game-img" src="./assets/images/${p.imagen}" />` : ""}
 
@@ -149,7 +151,15 @@ export async function gameView(app) {
   }
 
   function verificarRespuesta(btn, correcta) {
+    
     if (intentoCerrado) return;
+
+    if (bloqueado) return; // 🔥 si ya respondió, no hacer nada
+    bloqueado = true;
+
+    // 🔥 BLOQUEAR TODOS LOS BOTONES INMEDIATAMENTE
+    const botones = document.querySelectorAll(".option");
+    botones.forEach((b) => (b.disabled = true));
 
     const seleccion = parseInt(btn.dataset.i);
     const esCorrecta = seleccion === correcta;
@@ -157,6 +167,7 @@ export async function gameView(app) {
     if (esCorrecta) {
       correctas++;
 
+      // ⭐ animación de estrellas
       setTimeout(() => {
         const stars = document.querySelectorAll(".star");
         const star = stars[correctas - 1];
@@ -170,42 +181,33 @@ export async function gameView(app) {
         }
       }, 100);
     } else {
-      btn.style.background = "red";
+      // 🔥 pintar opción incorrecta
+      btn.classList.add("wrong");
+
       const sinVidas = perderVida();
 
       if (sinVidas) {
-        return;
+        return; // ya muestra modal de sin vidas
       }
     }
 
-    document.querySelectorAll(".option").forEach((optionButton) => {
-      optionButton.disabled = true;
-    });
-
+    // 🔥 SIEMPRE mostrar feedback (correcto o incorrecto)
     mostrarFeedbackRespuesta(esCorrecta);
   }
 
   function perderVida() {
-    const vidas = loseLife(userId); // 🔥 ÚNICO SISTEMA
+  const state = getState();
+  const userId = state.currentUser?.id || state.currentUser?.nombre;
 
-    if (vidas <= 0) {
-      updateLives(0);
-      registrarIntento(0);
-      intentoCerrado = true;
+  const vidas = loseLife(userId);
 
-      document.querySelectorAll(".option").forEach((btn) => {
-        btn.disabled = true;
-      });
-
-      mostrarSinVidasModal();
-      return true;
-    }
-
-    updateLives(vidas);
-    persistCurrentUser();
-
-    return false;
+  if (vidas <= 0) {
+    mostrarSinVidasModal();
+    return true;
   }
+
+  return false;
+}
 
   function terminarIntento() {
     const ok = confirm("¿Seguro que deseas terminar este intento?");

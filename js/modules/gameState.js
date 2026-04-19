@@ -539,6 +539,9 @@ export function getLivesReal(userId) {
 }
 
 export function loseLife(userId) {
+  const state = getState();
+  if (!state || !state.currentUser) return 0;
+
   let vidas = getLivesReal(userId);
 
   if (vidas <= 0) return 0;
@@ -554,11 +557,9 @@ export function loseLife(userId) {
     localStorage.setItem(keyTiempo, Date.now());
   }
 
-  // 🔥 SINCRONIZA ESTADO GLOBAL
+  // 🔥 ACTUALIZAR ESTADO CORRECTO
   state.vidas = vidas;
-  if (state.currentUser) {
-    state.currentUser.vidas = vidas;
-  }
+  state.currentUser.vidas = vidas;
 
   return vidas;
 }

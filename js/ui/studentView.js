@@ -15,39 +15,43 @@ import { obtenerUsuarios } from "../services/firestoreService.js";
 
 import { escucharUsuariosRealtime } from "../services/firestoreService.js";
 
+async function cargarUsuariosOffline() {
+  const local = getLocalUsers();
+
+  if (local.length) {
+    console.warn("📴 Modo offline: usando usuarios locales");
+    return local;
+  }
+
+  return [];
+}
+
 export async function studentView(app) {
   app.classList.remove("teacher-view");
 
-  // let users = [];
-
-  // // 🔥 NUEVO: cargar también desde Firestore
-  // try {
-  //   const firebaseUsers = await obtenerUsuarios();
-
-  //   // 🔥 FIRESTORE ES LA FUENTE PRINCIPAL
-  //   users = firebaseUsers;
-
-  //   // 🔥 guardar como cache local
-  //   saveLocalUsers(users);
-  // } catch (error) {
-  //   console.error("Error cargando desde Firebase:", error);
-
-  //   // 🔥 fallback SOLO si falla internet
-  //   users = getLocalUsers();
-  // }
-
   let users = [];
+  let unsubscribe = null;
 
-  // 🔥 SUSCRIPCIÓN EN TIEMPO REAL
-  const unsubscribe = escucharUsuariosRealtime((firebaseUsers) => {
-    users = firebaseUsers;
+  try {
+    // 🔥 intentar tiempo real (online)
+    unsubscribe = escucharUsuariosRealtime((firebaseUsers) => {
+      users = firebaseUsers;
 
-    // cache local opcional
-    saveLocalUsers(users);
+      // guardar cache offline
+      saveLocalUsers(users);
+
+      renderCursos();
+      renderList();
+      renderRanking();
+    });
+  } catch (error) {
+    console.warn("⚠️ Error en tiempo real, usando offline");
+
+    users = await cargarUsuariosOffline();
 
     renderCursos();
     renderList();
-  });
+  }
 
   let cursoActivo = "Todos";
   let filtroNombre = "";
@@ -55,9 +59,14 @@ export async function studentView(app) {
   app.innerHTML = `
     <div class="card student-panel">
       <h2>👨‍🎓 Panel Estudiante</h2>
+      
+
+      <div id="ranking" class="ranking-box"></div>
+
       <p class="student-panel-subtitle">Busca tu curso y luego tu nombre para entrar mas rapido.</p>
 
       <div class="student-toolbar">
+      ${backButton("student")}
         <button class="btn" id="btn-add" type="button">
           Registrar estudiantes
         </button>
@@ -68,14 +77,17 @@ export async function studentView(app) {
         <button class="btn" id="export" type="button">Exportar progreso</button>
       </div>
 
+      
+
       <div class="student-filters">
+      
         <input id="student-search" class="student-search" placeholder="Buscar por nombre..." />
         <div id="course-list" class="course-list"></div>
       </div>
 
       <div id="student-summary" class="student-summary"></div>
       <ul id="user-list" class="student-list"></ul>
-      ${backButton("student")}
+      
 <br/><br/>
     </div>
   `;
@@ -139,6 +151,7 @@ export async function studentView(app) {
         cursoActivo = button.dataset.curso;
         renderCursos();
         renderList();
+        renderRanking(); // 🔥 AQUI ESTA LA CLAVE
       });
     });
   }
@@ -281,16 +294,21 @@ export async function studentView(app) {
         ultimoTiempoVida: Date.now(),
       };
 
-      const userGuardado = await guardarUsuario(user);
-      const userFinal = userGuardado || user;
+      const userFinal = await sincronizarUsuario(user);
 
-      users.push(userFinal);
+      // 🔥 actualizar local inmediatamente (UX fluida)
+      if (userFinal && userFinal.id) {
+        const existe = users.some((u) => u.id === userFinal.id);
+
+        if (!existe) {
+          users.push(userFinal);
+        }
+      }
+
       guardarUsuariosLocales();
       renderCursos();
       renderList();
       renderAdminList();
-      form.reset();
-      nameInput.focus();
     });
 
     cancelButton.addEventListener("click", cerrarModal);
@@ -401,6 +419,80 @@ export async function studentView(app) {
     actualizarVidasLista(usuariosCache);
   }
 
+  function renderRanking() {
+    const rankingDiv = document.getElementById("ranking");
+
+    if (!rankingDiv) return;
+
+    let filtrados = users;
+
+    // 🔥 FILTRO POR CURSO (CLAVE)
+    if (cursoActivo !== "Todos") {
+      filtrados = users.filter(
+        (u) => ((u.curso || "Sin curso").trim() || "Sin curso") === cursoActivo,
+      );
+    }
+
+    // 🔥 aplicar filtro por curso
+    if (cursoActivo !== "Todos") {
+      filtrados = users.filter(
+        (u) => ((u.curso || "Sin curso").trim() || "Sin curso") === cursoActivo,
+      );
+    }
+
+    // 🔥 calcular score inteligente
+    const ranking = filtrados
+      .map((u) => {
+        const progreso = u.progreso || {};
+
+        const estrellas = Object.values(progreso).reduce(
+          (acc, p) => acc + (p.estrellas || 0),
+          0,
+        );
+
+        const intentos = Object.values(progreso).reduce(
+          (acc, p) => acc + (p.intentos || 0),
+          0,
+        );
+        // 🔥 ANTI TRAMPA
+        if (intentos === 0) intentos = 1;
+
+        return {
+          ...u,
+          estrellas,
+          intentos,
+          score: estrellas * 50 + (u.monedas || 0) * 30 - intentos * 10,
+        };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5); // 🔥 TOP 5
+
+    // 🔥 render
+    rankingDiv.innerHTML = `
+    <div class="ranking-card">
+      <h3>🏆 Top 5 de  ${cursoActivo}</h3>
+
+      ${
+        ranking.length === 0
+          ? "<p>No hay datos aún</p>"
+          : ranking
+              .map(
+                (u, i) => `
+        <div class="ranking-item">
+          <span class="pos">${i + 1}</span>
+          <span class="name">${u.nombre}</span>
+          <span class="stats">
+            💰 ${u.monedas || 0} | ⭐ ${u.estrellas} | 🔁 ${u.intentos}
+          </span>
+        </div>
+      `,
+              )
+              .join("")
+      }
+    </div>
+  `;
+  }
+
   const intervalLista = setInterval(() => {
     actualizarVidasLista(usuariosCache);
   }, 1000);
@@ -412,6 +504,7 @@ export async function studentView(app) {
 
   renderCursos();
   renderList();
+  renderRanking();
 
   // BOTÓN REGISTRO
   addButton.addEventListener("click", abrirAccesoAdmin);
@@ -455,11 +548,12 @@ export async function studentView(app) {
   }
 }
 
-
-
 document.addEventListener("click", (e) => {
   if (e.target.closest(".back-button")) {
-    unsubscribe(); // 🔥 DETENER ESCUCHA
+    if (typeof unsubscribe === "function") {
+      unsubscribe(); // 🔥 detener realtime
+    }
+
     clearInterval(intervalLista);
   }
 });

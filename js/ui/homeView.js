@@ -13,6 +13,7 @@ export function homeView(app) {
       <h5 style="margin-top:15px; font-size:25px;">
        Imanarninchikwan Pachakallpachakamaymanta Yachanachik 
       </h5>
+      
 
      
 

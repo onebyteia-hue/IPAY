@@ -62,33 +62,16 @@ export async function sincronizarUsuario(user) {
       progreso: user.progreso || {},
     };
 
-    // 🔥 CASO 1: tiene ID → actualizar
+    // 🔥 SI TIENE ID → SOLO ACTUALIZA
     if (user.id) {
-      try {
-        await updateDoc(doc(db, "user_fisica", user.id), userData);
-        return { ...user, ...userData };
-      } catch (error) {
-        console.warn("⚠️ No existe doc, creando uno nuevo...");
-      }
+      await updateDoc(doc(db, "user_fisica", user.id), userData);
+      return { ...user, ...userData };
     }
 
-    // 🔥 CASO 2: buscar por nombre + curso
-    const usuarios = await obtenerUsuarios();
+    // 🔥 SI NO TIENE ID → CREAR SOLO UNA VEZ
+    const nuevo = await addDoc(collection(db, "user_fisica"), userData);
 
-    const existente = usuarios.find(
-      (u) =>
-        u.nombre === user.nombre &&
-        u.curso === user.curso
-    );
-
-    if (existente) {
-      await updateDoc(doc(db, "user_fisica", existente.id), userData);
-      return { ...userData, id: existente.id };
-    }
-
-    // 🔥 CASO 3: crear nuevo
-    const nuevo = await guardarUsuario(userData);
-    return nuevo;
+    return { ...userData, id: nuevo.id };
 
   } catch (error) {
     console.error("❌ Error sincronizando:", error);
