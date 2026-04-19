@@ -604,7 +604,7 @@ input {
   }
 
   .btn {
-  width: 90%;              /* 🔥 ya no ocupa todo */
+  width: 80%;              /* 🔥 ya no ocupa todo */
   max-width: 320px;        /* 🔥 tamaño tipo app */
   margin: 6px auto;        /* 🔥 separación + centrado */
 }
@@ -759,14 +759,14 @@ input {
   width: 100%;
   box-sizing: border-box;
   word-break: break-word;
-  margin: 8px 0;
+  margin: 5px 0;
 
   background: #58cc02; /* 🟢 verde Duolingo */
   color: white;
 
   border: none;
   border-radius: 14px;
-  padding: 14px;
+  padding: 10px;
 
   font-weight: 700;
 
