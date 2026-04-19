@@ -102,10 +102,10 @@ export async function teacherView(app) {
   document.getElementById("btn-img").onclick = () => {
 
     const imagenes = ["a1.jpg", "a2.png", "a3.png", "a4.png", "a5.png", "a6.png", "a7.png", "a8.jpg", "a9.jpg", "a10.jpg",
-                      "a11.jpg", "a12.jpg", "a13.jpg", "a14.jpg", "a15.jpg", "a16.jpg", "a17.jpg", "a18.jpg", "a19.jpg", "a20.jpg",
-                      "a21.jpg", "a22.jpg", "a23.jpg", "a24.jpg", "a25.jpg", "a26.jpg", "a27.jpg", "a28.jpg", "a29.jpg", "a30.jpg",
-                      "a31.jpg", "a32.jpg", "a33.jpg", "a34.jpg", "a35.jpg", "a36.jpg", "a37.jpg", "a38.jpg", "a39.jpg", "a40.jpg",
-                      "a41.jpg", "a42.jpg", "a43.jpg", "a44.jpg", "a45.jpg", "a46.jpg", "a47.jpg", "a48.jpg", "a49.jpg", "a50.jpg",
+                      "a11.jpeg", "a12.jpg", "a13.png", "a14.jpeg", "a15.jpeg", "a16.jpeg", "a17.jpeg", "a18.jpeg", "a19.jpeg", "a20.jpeg",
+                      "a21.jpeg", "a22.jpeg", "a23.jpeg", "a24.jpeg", "a25.jpeg", "a26.jpeg", "a27.jpeg", "a28.jpeg", "a29.jpeg", "a30.jpeg",
+                      "a31.jpeg", "a32.jpeg", "a33.jpeg", "a34.jpeg", "a35.jpeg", "a36.jpeg", "a37.jpeg", "a38.jpeg", "a39.jpeg", "a40.jpeg",
+                      "a41.jpeg", "a42.jpeg", "a43.jpeg", "a44.jpeg", "a45.jpeg", "a46.jpeg", "a47.jpg", "a48.jpg", "a49.jpg", "a50.jpg",
                       "a51.jpg", "a52.jpg", "a53.jpg", "a54.jpg", "a55.jpg", "a56.jpg", "a57.jpg", "a58.jpg", "a59.jpg", "a60.jpg"
     ];
 

@@ -12,6 +12,7 @@ import { getRandomQuestions } from "../modules/utils.js";
 import { getLocalQuestions } from "../services/storageService.js";
 
 import { ProgressBar } from "./components/progressBar.js";
+import { StarBar } from "./components/starBar.js";
 
 import {
   getTiempoRestante,
@@ -21,6 +22,8 @@ import {
 
 export async function gameView(app) {
   const state = getState();
+  const nivelActual = Number(state?.nivel || 1);
+
   const userId = state.currentUser?.id || state.currentUser?.nombre; // ✅ AQUÍ
 
   let intervalVidas; // 🔥 declarar arriba
@@ -46,7 +49,6 @@ export async function gameView(app) {
     mostrarSinVidasBloqueo(app);
     return;
   }
-  const nivelActual = Number(state.nivel || state.currentUser?.nivel || 1);
 
   function volverAlPerfil() {
     if (state.currentUser) {
@@ -105,6 +107,10 @@ export async function gameView(app) {
     app.innerHTML = `
   <div class="card">
 
+  ${StarBar({ correctas, total: 10 })}
+
+  ${ProgressBar({ actual, total })}
+
     ${ProgressBar({ actual, total })}
 
     <h3>Pregunta ${actual}/${total}</h3>
@@ -126,7 +132,7 @@ export async function gameView(app) {
     </div>
 
     <p>
-  ❤️ Te quedan <span id="vidas">${getLivesReal(userId)}</span> corazones
+  ❤️ ❤️ Te quedan <span id="vidas">${getLivesReal(userId)}</span> corazones
 </p>
 <p>
   ⏳ Recuperación en: <span id="timer">--:--</span>
@@ -150,7 +156,19 @@ export async function gameView(app) {
 
     if (esCorrecta) {
       correctas++;
-      btn.style.background = "green";
+
+      setTimeout(() => {
+        const stars = document.querySelectorAll(".star");
+        const star = stars[correctas - 1];
+
+        if (star) {
+          star.classList.add("active", "animate");
+
+          setTimeout(() => {
+            star.classList.remove("animate");
+          }, 400);
+        }
+      }, 100);
     } else {
       btn.style.background = "red";
       const sinVidas = perderVida();
@@ -240,15 +258,15 @@ export async function gameView(app) {
 
   function finalizarJuego(finalizadoPorUsuario = false) {
     let monedas = 0;
-    let estrellas = 0;
+    let estrellas = correctas; // 🔥 0 a 10 estrellas
 
     if (correctas === 10) monedas = 3;
     else if (correctas >= 8) monedas = 2;
     else if (correctas >= 6) monedas = 1;
 
-    if (correctas === 10) estrellas = 3;
-    else if (correctas >= 8) estrellas = 2;
-    else if (correctas >= 6) estrellas = 1;
+    // if (correctas === 10) estrellas = 3;
+    // else if (correctas >= 8) estrellas = 2;
+    // else if (correctas >= 6) estrellas = 1;
 
     updateCoins(state.monedas + monedas);
     registrarIntento(estrellas);
@@ -261,7 +279,7 @@ export async function gameView(app) {
         <p>${finalizadoPorUsuario ? "Intento terminado por el estudiante." : "Intento completado."}</p>
         <p>Nivel jugado: ${nivelActual}</p>
         <p>Correctas: ${correctas}/10</p>
-        <p>⭐ Estrellas obtenidas: ${estrellas}</p>
+        <p>⭐ Estrellas obtenidas: ${estrellas} / 10</p>
         <p>💰 Monedas ganadas: ${monedas}</p>
         <p>❤️ Corazones actuales: ${getLivesReal(userId)}/10</p>
 
@@ -290,11 +308,8 @@ export async function gameView(app) {
       mostrarSubidaNivel(nivelDespues);
     }
 
-    
     intentoRegistrado = true;
   }
-
-  
 
   function mostrarSinVidasBloqueo(app) {
     app.innerHTML = `

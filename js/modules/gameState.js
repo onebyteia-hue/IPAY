@@ -307,17 +307,17 @@ export const TOTAL_LEVELS = 10;
 const MAX_CORAZONES = 10;
 const TIEMPO_RECUPERACION = 2 * 60 * 1000; // 2 min
 
-const state = {
-  currentUser: null,
-  vidas: MAX_CORAZONES,
-  monedas: 0,
-  nivel: 1,
-  progreso: {},
-};
+const userStates = {}; // 🔥 estado por usuario
+let currentUserId = null;
 
 // ===============================
 // 🧠 HELPERS SEGUROS
 // ===============================
+
+function getCurrentState() {
+  if (!currentUserId) return null;
+  return userStates[currentUserId];
+}
 
 function toNumber(value, fallback = 0) {
   const num = Number(value);
@@ -349,17 +349,32 @@ function initCorazones(userId) {
 // ===============================
 
 export function getState() {
-  return state;
+  return getCurrentState();
 }
+
 
 export function setUser(user) {
   if (!user) return;
 
   const userId = user.id || user.nombre;
+  currentUserId = userId;
 
   initCorazones(userId);
 
   const vidasLocal = getLivesReal(userId);
+
+  // 🔥 CREAR ESTADO AISLADO SI NO EXISTE
+  if (!userStates[userId]) {
+    userStates[userId] = {
+      currentUser: null,
+      vidas: MAX_CORAZONES,
+      monedas: 0,
+      nivel: 1,
+      progreso: {},
+    };
+  }
+
+  const state = userStates[userId];
 
   state.currentUser = {
     ...user,
@@ -368,10 +383,7 @@ export function setUser(user) {
 
   state.vidas = clamp(toNumber(vidasLocal, MAX_CORAZONES), 0, MAX_CORAZONES);
   state.monedas = toNumber(user.monedas, 0);
-
-  // 🔥 PROTECCIÓN DE NIVEL
-  state.nivel = Math.max(toNumber(user.nivel, 1), state.nivel);
-
+  state.nivel = toNumber(user.nivel, 1);
   state.progreso = user.progreso ?? {};
 }
 
@@ -380,7 +392,8 @@ export function setUser(user) {
 // ===============================
 
 export function updateLives(vidas) {
-  if (!state.currentUser) return;
+  const state = getCurrentState();
+  if (!state || !state.currentUser) return;
 
   const userId = state.currentUser.id || state.currentUser.nombre;
 
@@ -389,7 +402,6 @@ export function updateLives(vidas) {
   state.vidas = vidasNum;
   state.currentUser.vidas = vidasNum;
 
-  // 🔥 CLAVE CORRECTA (ANTES ERA ERROR)
   localStorage.setItem(getKey(userId, "corazones"), vidasNum);
 
   persistCurrentUser();
@@ -400,6 +412,9 @@ export function updateLives(vidas) {
 // ===============================
 
 export function updateCoins(monedas) {
+  const state = getCurrentState();
+  if (!state) return;
+
   const monedasNum = toNumber(monedas, 0);
 
   state.monedas = monedasNum;
@@ -411,10 +426,9 @@ export function updateCoins(monedas) {
   persistCurrentUser();
 }
 
-
 function calcularSubidaNivel(aciertos, nivelActual) {
-  if (aciertos >= 9) return nivelActual + 2; // 🔥 modo PRO
-  if (aciertos >= 6) return nivelActual + 1;
+  if (aciertos >= 9) return nivelActual + 2;
+  if (aciertos >= 7) return nivelActual + 1;
   return nivelActual;
 }
 // ===============================
@@ -422,11 +436,10 @@ function calcularSubidaNivel(aciertos, nivelActual) {
 // ===============================
 
 export function updateProgress(nivel, aciertos, intento = 1) {
-  // ⭐ convertir aciertos → estrellas (puedes ajustar)
-  let estrellas = 0;
-  if (aciertos >= 9) estrellas = 3;
-  else if (aciertos >= 6) estrellas = 2;
-  else if (aciertos >= 3) estrellas = 1;
+  const state = getCurrentState();
+  if (!state) return;
+
+  let estrellas = Math.max(0, Math.min(aciertos, 10));
 
   if (!state.progreso[nivel]) {
     state.progreso[nivel] = {
@@ -436,7 +449,6 @@ export function updateProgress(nivel, aciertos, intento = 1) {
     };
   }
 
-  // 🔥 guardar mejor resultado
   state.progreso[nivel].estrellas = Math.max(
     state.progreso[nivel].estrellas,
     estrellas
@@ -448,47 +460,38 @@ export function updateProgress(nivel, aciertos, intento = 1) {
     state.progreso[nivel].completado = true;
   }
 
-  // ===============================
-  // 🚀 SUBIDA DE NIVEL AUTOMÁTICA
-  // ===============================
-
   const nivelActual = state.nivel;
 
   let nuevoNivel = calcularSubidaNivel(aciertos, nivelActual);
-
-  // 🔥 límite máximo
   nuevoNivel = Math.min(nuevoNivel, TOTAL_LEVELS);
 
-  // 🔥 solo sube, nunca baja
   if (nuevoNivel > state.nivel) {
     state.nivel = nuevoNivel;
 
     if (state.currentUser) {
       state.currentUser.nivel = nuevoNivel;
     }
-
-    console.log(`🎉 Subiste de nivel: ${nivelActual} → ${nuevoNivel}`);
   }
 
-  // guardar progreso en usuario
   if (state.currentUser) {
     state.currentUser.progreso = state.progreso;
   }
 
   persistCurrentUser();
 }
+
+
 // ===============================
 // 🔄 FIREBASE
 // ===============================
 
 export async function persistCurrentUser() {
-  if (!state.currentUser) return;
-  state.currentUser.nivel = state.nivel;
+  const state = getCurrentState();
+  if (!state || !state.currentUser) return;
 
-  // 🔥 FORZAR SINCRONIZACIÓN REAL
   const userActualizado = {
     ...state.currentUser,
-    nivel: state.nivel, // 🔥 CLAVE
+    nivel: state.nivel,
     monedas: state.monedas,
     vidas: state.vidas,
     progreso: state.progreso,
