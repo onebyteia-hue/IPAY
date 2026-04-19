@@ -308,14 +308,15 @@ input {
 .student-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
-  box-sizing: border-box;
-  z-index: 1000;
+
+  padding: 12px;              /* 🔥 evita que toque bordes */
+  overflow-y: auto;           /* 🔥 scroll en móviles */
 }
+
 
 .student-modal-card {
   width: min(92vw, 560px);
@@ -705,9 +706,10 @@ input {
   }
 }
 .game-img {
-  width: 150%;          /* 🔥 ocupa todo el ancho disponible */
-  max-width: 600px;     /* 🔥 límite en pantallas grandes */
-  height: auto;         /* mantiene proporción */
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+
   border-radius: 12px;
   margin: 15px auto;
   display: block;
@@ -746,6 +748,8 @@ input {
 }
 .option {
   width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
   margin: 8px 0;
 
   background: #58cc02; /* 🟢 verde Duolingo */
@@ -845,4 +849,7 @@ input {
 .ranking-item .stats {
   font-size: 0.9rem;
   color: #666;
+}
+* {
+  box-sizing: border-box;
 }
