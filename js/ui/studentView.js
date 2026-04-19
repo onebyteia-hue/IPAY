@@ -58,6 +58,7 @@ export async function studentView(app) {
 
   app.innerHTML = `
     <div class="card student-panel">
+    ${backButton("student")}
       <h2>👨‍🎓 Panel Estudiante</h2>
       
 
@@ -66,7 +67,7 @@ export async function studentView(app) {
       <p class="student-panel-subtitle">Busca tu curso y luego tu nombre para entrar mas rapido.</p>
 
       <div class="student-toolbar">
-      ${backButton("student")}
+      
         <button class="btn" id="btn-add" type="button">
           Registrar estudiantes
         </button>
