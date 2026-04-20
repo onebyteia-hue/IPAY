@@ -427,12 +427,7 @@ export async function studentView(app) {
 
     let filtrados = users;
 
-    // 🔥 FILTRO POR CURSO (CLAVE)
-    if (cursoActivo !== "Todos") {
-      filtrados = users.filter(
-        (u) => ((u.curso || "Sin curso").trim() || "Sin curso") === cursoActivo,
-      );
-    }
+    
 
     // 🔥 aplicar filtro por curso
     if (cursoActivo !== "Todos") {
@@ -451,12 +446,12 @@ export async function studentView(app) {
           0,
         );
 
-        const intentos = Object.values(progreso).reduce(
+        const intentosRaw = Object.values(progreso).reduce(
           (acc, p) => acc + (p.intentos || 0),
           0,
         );
-        // 🔥 ANTI TRAMPA
-        if (intentos === 0) intentos = 1;
+
+        const intentos = intentosRaw === 0 ? 1 : intentosRaw;
 
         return {
           ...u,
