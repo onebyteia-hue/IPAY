@@ -1,14 +1,3 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import { getAuth, signInAnonymously } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyA2xTzOJ_fvAIMEjBBWQSxDIZIw8Inp-ww",
   authDomain: "simulacroesfms2026.firebaseapp.com",
@@ -16,23 +5,55 @@ const firebaseConfig = {
   storageBucket: "simulacroesfms2026.firebasestorage.app",
   messagingSenderId: "1076674602133",
   appId: "1:1076674602133:web:d0b010c9dfbee969d7e79c",
-  measurementId: "G-N1FYQ17Z90"
+  measurementId: "G-N1FYQ17Z90",
 };
 
-// 🚀 INIT APP
-const app = initializeApp(firebaseConfig);
+const FIREBASE_URLS = {
+  app: "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+  firestore: "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
+  auth: "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+};
 
-// 🔥 FIRESTORE
-export const db = getFirestore(app);
+let firebaseServices = null;
 
-// 🔥 AUTH (PRIMERO se declara)
-const auth = getAuth(app);
+export async function getFirebaseServices() {
+  if (firebaseServices) return firebaseServices;
 
-// 🔥 PROMESA DE AUTENTICACIÓN
-export const authReady = signInAnonymously(auth)
-  .then(() => {
-    console.log("✅ Auth anónimo listo");
+  try {
+    const [{ initializeApp }, { getFirestore }, { getAuth, signInAnonymously }] =
+      await Promise.all([
+        import(FIREBASE_URLS.app),
+        import(FIREBASE_URLS.firestore),
+        import(FIREBASE_URLS.auth),
+      ]);
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    firebaseServices = { app, db, auth, signInAnonymously };
+    return firebaseServices;
+  } catch (error) {
+    console.warn("Modo offline: Firebase no disponible.", error);
+    firebaseServices = null;
+    return null;
+  }
+}
+
+export const authReady = getFirebaseServices()
+  .then(async (services) => {
+    if (!services) return false;
+
+    try {
+      await services.signInAnonymously(services.auth);
+      console.log("✅ Auth anónimo listo");
+      return true;
+    } catch (error) {
+      console.warn("Continuando sin auth de Firebase.", error);
+      return false;
+    }
   })
   .catch((error) => {
-    console.error("❌ Error auth:", error);
+    console.warn("Continuando sin Firebase.", error);
+    return false;
   });

@@ -3,6 +3,7 @@
 
 import { registerRoute, navigate } from "./js/modules/router.js";
 import { authReady } from "./firebase.js";
+import { ensureOfflineData } from "./js/services/offlineBootstrap.js";
 
 import { homeView } from "./js/ui/homeView.js";
 import { studentView } from "./js/ui/studentView.js";
@@ -19,7 +20,6 @@ registerRoute("teacher", teacherView);
 registerRoute("game", gameView);
 registerRoute("map", mapView);
 
-// 🔥 ESPERAR AUTH
-authReady.then(() => {
+Promise.allSettled([authReady, ensureOfflineData()]).then(() => {
   navigate("home");
 });

@@ -31,6 +31,7 @@ export async function studentView(app) {
 
   let users = [];
   let unsubscribe = null;
+  let intervalLista = null;
 
   try {
     // 🔥 intentar tiempo real (online)
@@ -48,9 +49,6 @@ export async function studentView(app) {
     console.warn("⚠️ Error en tiempo real, usando offline");
 
     users = await cargarUsuariosOffline();
-
-    renderCursos();
-    renderList();
   }
 
   let cursoActivo = "Todos";
@@ -489,7 +487,7 @@ export async function studentView(app) {
   `;
   }
 
-  const intervalLista = setInterval(() => {
+  intervalLista = setInterval(() => {
     actualizarVidasLista(usuariosCache);
   }, 1000);
 
@@ -511,6 +509,9 @@ export async function studentView(app) {
   activarBack("home");
   document.addEventListener("click", (e) => {
     if (e.target.closest(".back-button")) {
+      if (typeof unsubscribe === "function") {
+        unsubscribe();
+      }
       clearInterval(intervalLista);
     }
   });
@@ -543,13 +544,3 @@ export async function studentView(app) {
     });
   }
 }
-
-document.addEventListener("click", (e) => {
-  if (e.target.closest(".back-button")) {
-    if (typeof unsubscribe === "function") {
-      unsubscribe(); // 🔥 detener realtime
-    }
-
-    clearInterval(intervalLista);
-  }
-});

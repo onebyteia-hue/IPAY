@@ -36,3 +36,59 @@ export function saveLocalQuestions(questions) {
 export function getLocalQuestions() {
   return JSON.parse(localStorage.getItem("preguntas_fisica_local")) || [];
 }
+
+export function upsertLocalQuestion(updatedQuestion) {
+  const questions = getLocalQuestions();
+
+  const index = questions.findIndex((question) => {
+    if (updatedQuestion.id && question.id) {
+      return question.id === updatedQuestion.id;
+    }
+
+    return (
+      question.enunciado === updatedQuestion.enunciado &&
+      Number(question.nivel) === Number(updatedQuestion.nivel)
+    );
+  });
+
+  if (index >= 0) {
+    questions[index] = { ...questions[index], ...updatedQuestion };
+  } else {
+    questions.push(updatedQuestion);
+  }
+
+  saveLocalQuestions(questions);
+  return questions;
+}
+
+export function deleteLocalUser(userToDelete) {
+  const users = getLocalUsers().filter((user) => {
+    if (userToDelete?.id && user.id) {
+      return user.id !== userToDelete.id;
+    }
+
+    return !(
+      user.nombre === userToDelete?.nombre &&
+      user.curso === userToDelete?.curso
+    );
+  });
+
+  saveLocalUsers(users);
+  return users;
+}
+
+export function deleteLocalQuestion(questionToDelete) {
+  const questions = getLocalQuestions().filter((question) => {
+    if (questionToDelete?.id && question.id) {
+      return question.id !== questionToDelete.id;
+    }
+
+    return !(
+      question.enunciado === questionToDelete?.enunciado &&
+      Number(question.nivel) === Number(questionToDelete?.nivel)
+    );
+  });
+
+  saveLocalQuestions(questions);
+  return questions;
+}

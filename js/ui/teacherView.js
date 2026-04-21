@@ -1,10 +1,5 @@
-import { db } from "../../firebase.js";
 import {
-  collection,
-  addDoc,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
+  guardarPregunta,
   obtenerPreguntas,
   actualizarPregunta,
   eliminarPregunta,
@@ -268,7 +263,7 @@ export async function teacherView(app) {
       await actualizarPregunta(preguntaEnEdicionId, pregunta);
       alert("✅ Pregunta actualizada");
     } else {
-      await addDoc(collection(db, "preguntas_fisica"), pregunta);
+      await guardarPregunta(pregunta);
       alert("✅ Guardado");
     }
 
