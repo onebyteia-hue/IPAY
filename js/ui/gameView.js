@@ -1,15 +1,9 @@
 import {
   getState,
-  updateLives,
   updateCoins,
   updateProgress,
-  persistCurrentUser,
 } from "../modules/gameState.js";
 import { navigate } from "../modules/router.js";
-import { obtenerPreguntas } from "../services/firestoreService.js";
-import { getRandomQuestions } from "../modules/utils.js";
-
-import { getLocalQuestions } from "../services/storageService.js";
 
 import { ProgressBar } from "./components/progressBar.js";
 import { StarBar } from "./components/starBar.js";
@@ -19,6 +13,7 @@ import {
   getLivesReal,
   loseLife,
 } from "../modules/gameState.js";
+import { getGameQuestionsForLevel } from "../services/levelQuestionService.js";
 
 export async function gameView(app) {
   const state = getState();
@@ -59,33 +54,18 @@ export async function gameView(app) {
     navigate("student");
   }
 
-  let preguntas = [];
+  let preguntasJuego = [];
 
   try {
-    preguntas = await obtenerPreguntas();
+    preguntasJuego = await getGameQuestionsForLevel(nivelActual, 10);
   } catch (error) {
-    preguntas = getLocalQuestions();
-
-    if (!preguntas.length) {
-      alert(
-        "No se pudieron cargar preguntas desde internet ni desde almacenamiento local.",
-      );
-      return volverAlPerfil();
-    }
-
-    alert("Sin conexion: se usaran las preguntas guardadas localmente.");
+    console.warn("No se pudieron preparar las preguntas del nivel.", error);
   }
 
-  let preguntasNivel = preguntas.filter(
-    (pregunta) => Number(pregunta.nivel) === nivelActual,
-  );
-
-  if (preguntasNivel.length === 0) {
+  if (preguntasJuego.length === 0) {
     alert(`No hay preguntas registradas para el nivel ${nivelActual}.`);
     return volverAlPerfil();
   }
-
-  let preguntasJuego = getRandomQuestions(preguntasNivel, 10);
 
   let index = 0;
   let correctas = 0;

@@ -1,6 +1,9 @@
 import { getLocalQuestions, saveLocalQuestions } from "./storageService.js";
 
-const BUNDLED_QUESTION_SOURCES = ["./data/capitulo1_niveles_1_10.json"];
+const BUNDLED_QUESTION_SOURCES = [
+  "./data/capitulo1_niveles_1_110.json",
+  "./data/capitulo1_niveles_1_10.json",
+];
 
 const COMPLETAR_DISTRACTORES = [
   "distancia",
@@ -84,22 +87,58 @@ function normalizeQuestion(levelNumber, question) {
   return null;
 }
 
-function normalizeQuestions(payload) {
+export function normalizeQuestions(payload) {
+  const dedupedQuestions = new Map();
+
   if (Array.isArray(payload)) {
-    return payload
+    payload
       .map((question) => normalizeQuestion(question.nivel, question))
-      .filter(Boolean);
+      .filter(Boolean)
+      .forEach((question) => {
+        dedupedQuestions.set(
+          question.id || `${question.nivel}-${question.enunciado}`,
+          question,
+        );
+      });
+
+    return [...dedupedQuestions.values()];
   }
 
   if (!Array.isArray(payload?.niveles)) {
     return [];
   }
 
-  return payload.niveles.flatMap((level) =>
+  payload.niveles.forEach((level) => {
     (level.preguntas || [])
       .map((question) => normalizeQuestion(level.nivel, question))
-      .filter(Boolean),
-  );
+      .filter(Boolean)
+      .forEach((question) => {
+        dedupedQuestions.set(
+          question.id || `${question.nivel}-${question.enunciado}`,
+          question,
+        );
+      });
+  });
+
+  return [...dedupedQuestions.values()];
+}
+
+function mergeQuestionCollections(...collections) {
+  const mergedQuestions = new Map();
+
+  collections.flat().forEach((question) => {
+    if (!question) return;
+
+    const normalized = normalizeQuestion(question.nivel, question);
+    if (!normalized) return;
+
+    mergedQuestions.set(
+      normalized.id || `${normalized.nivel}-${normalized.enunciado}`,
+      normalized,
+    );
+  });
+
+  return [...mergedQuestions.values()];
 }
 
 async function loadBundledQuestions() {
@@ -122,15 +161,25 @@ async function loadBundledQuestions() {
   return [];
 }
 
+export async function hydrateOfflineQuestions(baseQuestions = []) {
+  const bundledQuestions = await loadBundledQuestions();
+  const mergedQuestions = mergeQuestionCollections(baseQuestions, bundledQuestions);
+
+  if (mergedQuestions.length) {
+    saveLocalQuestions(mergedQuestions);
+  }
+
+  return mergedQuestions;
+}
+
 export async function ensureOfflineData() {
   const localQuestions = getLocalQuestions();
   if (localQuestions.length) {
     return { seeded: false, questionCount: localQuestions.length };
   }
 
-  const bundledQuestions = await loadBundledQuestions();
+  const bundledQuestions = await hydrateOfflineQuestions();
   if (bundledQuestions.length) {
-    saveLocalQuestions(bundledQuestions);
     return { seeded: true, questionCount: bundledQuestions.length };
   }
 

@@ -9,6 +9,10 @@ import { getLivesReal, getTiempoRestante } from "../modules/gameState.js";
 import { navigate } from "../modules/router.js";
 import { getState } from "../modules/gameState.js";
 import { exportarProgreso } from "../modules/utils.js";
+import {
+  exportarRespaldoPortable,
+  importarRespaldoPortable,
+} from "../modules/portableData.js";
 import { backButton, activarBack } from "./components/backButton.js";
 
 import { obtenerUsuarios } from "../services/firestoreService.js";
@@ -74,6 +78,9 @@ export async function studentView(app) {
           Ver niveles
         </button>
         <button class="btn" id="export" type="button">Exportar progreso</button>
+        <button class="btn" id="export-backup" type="button">Respaldo USB</button>
+        <button class="btn btn-secondary" id="import-backup" type="button">Importar respaldo</button>
+        <input id="backup-file" type="file" accept=".json,application/json" hidden />
       </div>
 
       
@@ -96,6 +103,7 @@ export async function studentView(app) {
   const courseList = document.getElementById("course-list");
   const searchInput = document.getElementById("student-search");
   const addButton = document.getElementById("btn-add");
+  const backupFileInput = document.getElementById("backup-file");
   document
     .getElementById("btn-map")
     .addEventListener("click", () => navigate("map"));
@@ -506,6 +514,32 @@ export async function studentView(app) {
   document.getElementById("export").onclick = () => {
     exportarProgreso(getState());
   };
+  document.getElementById("export-backup").onclick = () => {
+    exportarRespaldoPortable();
+    alert("Se descargó el respaldo portable de la app.");
+  };
+  document.getElementById("import-backup").onclick = () => {
+    backupFileInput.value = "";
+    backupFileInput.click();
+  };
+  backupFileInput.addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const result = await importarRespaldoPortable(file);
+      users = getLocalUsers();
+      renderCursos();
+      renderList();
+      renderRanking();
+      alert(
+        `Respaldo importado. Estudiantes: ${result.users}. Preguntas: ${result.questions}.`,
+      );
+    } catch (error) {
+      console.error("No se pudo importar el respaldo.", error);
+      alert("No se pudo importar el respaldo. Verifica que sea un archivo válido.");
+    }
+  });
   activarBack("home");
   document.addEventListener("click", (e) => {
     if (e.target.closest(".back-button")) {

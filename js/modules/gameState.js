@@ -426,10 +426,9 @@ export function updateCoins(monedas) {
   persistCurrentUser();
 }
 
-function calcularSubidaNivel(aciertos, nivelActual) {
-  if (aciertos >= 9) return nivelActual + 2;
-  if (aciertos >= 7) return nivelActual + 1;
-  return nivelActual;
+function calcularSubidaNivel(aciertos, nivelJugado) {
+  if (aciertos >= 7) return nivelJugado + 1;
+  return nivelJugado;
 }
 // ===============================
 // 📊 PROGRESO
@@ -460,10 +459,8 @@ export function updateProgress(nivel, aciertos, intento = 1) {
     state.progreso[nivel].completado = true;
   }
 
-  const nivelActual = state.nivel;
-
-  let nuevoNivel = calcularSubidaNivel(aciertos, nivelActual);
-  nuevoNivel = Math.min(nuevoNivel, TOTAL_LEVELS);
+  let nuevoNivel = calcularSubidaNivel(aciertos, nivel);
+  nuevoNivel = Math.min(Math.max(state.nivel, nuevoNivel), TOTAL_LEVELS);
 
   if (nuevoNivel > state.nivel) {
     state.nivel = nuevoNivel;
@@ -573,4 +570,3 @@ export function getTiempoRestante(userId) {
   const ahora = Date.now();
   return Math.max(0, TIEMPO_RECUPERACION - (ahora - ultimoTiempo));
 }
-

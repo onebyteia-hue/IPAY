@@ -1,6 +1,7 @@
 import { navigate } from "../modules/router.js";
 import { getState, setUser, TOTAL_LEVELS } from "../modules/gameState.js";
 import { getLivesReal, getTiempoRestante } from "../modules/gameState.js";
+import { hasQuestionsForLevel } from "../services/levelQuestionService.js";
 
 function construirResumenProgreso(user) {
   const niveles = Array.from({ length: TOTAL_LEVELS }, (_, index) => index + 1);
@@ -32,19 +33,22 @@ function construirResumenProgreso(user) {
     .join("");
 }
 
-export function studentProfileView(app, data = {}) {
+export async function studentProfileView(app, data = {}) {
   app.classList.remove("teacher-view");
 
   const state = getState();
   const user = data.user || state.currentUser;
-  setUser(user);
-  localStorage.setItem("vidas", user.vidas);
 
   if (!user) {
     navigate("student");
     return;
   }
 
+  setUser(user);
+  localStorage.setItem("vidas", user.vidas);
+
+  const nivelActual = Number(user.nivel ?? 1);
+  const preguntasDisponibles = await hasQuestionsForLevel(nivelActual);
   const progresoHtml = construirResumenProgreso(user);
   const userId = user.id || user.nombre;
   const vidasActuales = getLivesReal(userId);
@@ -86,7 +90,8 @@ export function studentProfileView(app, data = {}) {
   <span id="timer">${siguienteVidaTexto}</span>
 </p>
         </div>
-        <button class="btn" id="play">Comenzar a jugar</button>
+        <button class="btn" id="play" ${preguntasDisponibles ? "" : "disabled"}>Comenzar a jugar</button>
+        <p id="play-help">${preguntasDisponibles ? `Nivel listo para jugar.` : `No hay preguntas disponibles para el nivel ${nivelActual}.`}</p>
         <br/><br/>
 
         <div class="student-progress-box">
@@ -124,6 +129,10 @@ export function studentProfileView(app, data = {}) {
 
   document.getElementById("play").onclick = () => {
     clearInterval(intervalPerfil);
+
+    if (!preguntasDisponibles) {
+      return;
+    }
 
     if (getLivesReal(userId) <= 0) {
       alert("💀 Sin corazones. Espera a que se recarguen ⏳");
