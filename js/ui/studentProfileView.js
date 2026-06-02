@@ -75,13 +75,45 @@ export async function studentProfileView(app, data = {}) {
 
   app.innerHTML = `
     <div class="student-profile-page">
-      <div class="card student-modal-card">
-        <div class="student-profile-header">
-          <p class="student-profile-label">Perfil del estudiante</p>
-          <h2 class="student-profile-name">${user.nombre || "Estudiante sin nombre"}</h2>
-          <p class="student-profile-subtitle">Revisa tus datos y tu avance antes de comenzar a jugar.</p>
-        </div>
+      <div class="card student-modal-card" style="overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.12);">
         
+        <!-- Cabecera Hero Profesional -->
+        <div class="student-profile-header" style="
+          text-align: center; 
+          margin: -20px -20px 35px -20px; 
+          padding: 50px 20px; 
+          background: linear-gradient(135deg, #1cb0f6 0%, #1689c4 100%); 
+          box-shadow: 0 8px 25px rgba(28, 176, 246, 0.3);
+        ">
+          <p class="student-profile-label" style="
+            margin: 0; 
+            color: rgba(255, 255, 255, 0.85); 
+            font-weight: 800; 
+            font-variant: all-small-caps; 
+            letter-spacing: 3px; 
+            font-size: 0.95rem;
+          ">Identidad del Estudiante</p>
+          
+          <h1 class="student-profile-name" style="
+            margin: 12px 0; 
+            font-size: 3.4rem; 
+            color: #ffffff; 
+            font-weight: 900; 
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            letter-spacing: -1.5px; 
+            line-height: 1;
+          ">
+            ${user.nombre || "Estudiante sin nombre"}
+          </h1>
+          
+          <p class="student-profile-subtitle" style="
+            margin: 0; 
+            color: #ffffff; 
+            font-size: 1.1rem; 
+            font-weight: 500; 
+            opacity: 0.9;
+          ">Panel de control de avance y estadísticas personales</p>
+        </div>
 
         <div class="student-detail-grid">
           <p><strong>Curso:</strong> ${user.curso || "No registrado"}</p>

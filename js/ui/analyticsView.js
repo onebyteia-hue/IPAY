@@ -713,12 +713,36 @@ function showStudentAnalytics(student, usuarios, preguntas) {
 
   document.getElementById("student-analytics").style.display = "block";
 
+  // 🔥 Lista de iconos aleatorios para el avatar (temática física/ciencia)
+  const icons = ['⚛️', '🚀', '🔬', '🔭', '🪐', '🧠', '⚡', '🔋', '🤖', '📐', '🍎', '💡', '☄️', '📡', '🧪', '🌍'];
+  const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+
   // Información del estudiante
   const infoHtml = `
-    <p><strong>Nombre:</strong> ${student.nombre || "Sin nombre"}</p>
-    <p><strong>ID:</strong> ${student.id || "No disponible"}</p>
-    <p><strong>Email:</strong> ${student.email || "No disponible"}</p>
-    <p><strong>Rol:</strong> ${student.rol || "estudiante"}</p>
+    <div class="student-profile-header" style="display: flex; align-items: center; gap: 20px; padding: 10px;">
+      <div class="student-avatar" style="
+        width: 80px; 
+        height: 80px; 
+        border-radius: 50%; 
+        background: #ffffff; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 40px; 
+        border: 4px solid #1cb0f6;
+        box-shadow: 0 10px 25px rgba(28, 176, 246, 0.25), 0 4px 8px rgba(0,0,0,0.1);
+        flex-shrink: 0;
+        transform: translateY(-3px);
+      ">
+        ${randomIcon}
+      </div>
+      <div class="student-profile-text">
+        <p style="margin: 0 0 5px 0; font-size: 1.3rem; color: #1a1a1a; font-weight: 800;">${student.nombre || "Sin nombre"}</p>
+        <p style="margin: 0 0 5px 0; color: #666;"><strong>ID:</strong> ${student.id || "No disponible"}</p>
+        <p style="margin: 0 0 5px 0; color: #666;"><strong>Email:</strong> ${student.email || "No disponible"}</p>
+        <p style="margin: 0; font-variant: all-small-caps; color: #1cb0f6; font-weight: bold;"><strong>Rol:</strong> ${student.rol || "estudiante"}</p>
+      </div>
+    </div>
   `;
   document.getElementById("student-info").innerHTML = infoHtml;
 
