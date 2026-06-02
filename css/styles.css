@@ -5,7 +5,7 @@ body {
 #app {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Permite que el contenido empiece desde arriba y el scroll sea natural */
   min-height: 100vh;
   min-height: 100dvh;
   padding: 16px;
@@ -515,8 +515,8 @@ textarea {
 
 .student-modal-card {
   width: min(92vw, 560px);
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: none; /* Permitir que crezca con el contenido */
+  overflow-y: visible; 
 }
 
 .answer-feedback-card {
