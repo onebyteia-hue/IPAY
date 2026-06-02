@@ -9,10 +9,28 @@ import { saveLocalQuestions } from "../services/storageService.js";
 import { obtenerUsuarios } from "../services/firestoreService.js";
 import { saveLocalUsers } from "../services/storageService.js";
 
+import { navigate } from "../modules/router.js";
+
 export async function teacherView(app) {
   app.classList.add("teacher-view");
 
-  const preguntas = await obtenerPreguntas();
+  let preguntas = await obtenerPreguntas();
+
+  const contenidos = Array.from(
+    new Set(
+      preguntas.map((p) => String(p.contenido || "MRUV").trim() || "MRUV"),
+    ),
+  );
+
+  if (!contenidos.includes("MRUV")) {
+    contenidos.unshift("MRUV");
+  }
+
+  contenidos.sort((a, b) => {
+    if (a === "MRUV") return -1;
+    if (b === "MRUV") return 1;
+    return a.localeCompare(b);
+  });
 
   let imagenSeleccionada = "";
   let preguntaEnEdicionId = null;
@@ -24,28 +42,78 @@ export async function teacherView(app) {
       <h2>👨‍🏫 Panel Maestro</h2>
       
 
-      <div class="form-box">
+      <div class="form-box teacher-form">
 
-        <input id="enunciado" placeholder="📝 Enunciado"/>
-
-        <div class="grid-2">
-          <input id="op1" placeholder="Opción 1"/>
-          <input id="op2" placeholder="Opción 2"/>
-          <input id="op3" placeholder="Opción 3"/>
-          <input id="op4" placeholder="Opción 4"/>
+        <div class="form-header">
+          <div>
+            <p class="section-label">Crear / Editar pregunta</p>
+            <h3 class="section-title">Datos del contenido</h3>
+            <p class="section-note">Selecciona el contenido activo o crea uno nuevo. Luego agrega la pregunta y marca la respuesta correcta.</p>
+          </div>
         </div>
 
+        <textarea id="enunciado" rows="5" placeholder="📝 Enunciado de la pregunta"></textarea>
+
         <div class="grid-2">
-          <input id="correcta" type="number" placeholder="Correcta (0-3)"/>
-          <input id="nivel" type="number" placeholder="Nivel"/>
+          <div class="option-row">
+            <input id="op1" placeholder="Opción 1" />
+            <label class="option-check">
+              <input type="checkbox" class="correct-checkbox" data-index="0" />
+              Correcta
+            </label>
+          </div>
+          <div class="option-row">
+            <input id="op2" placeholder="Opción 2" />
+            <label class="option-check">
+              <input type="checkbox" class="correct-checkbox" data-index="1" />
+              Correcta
+            </label>
+          </div>
+          <div class="option-row">
+            <input id="op3" placeholder="Opción 3" />
+            <label class="option-check">
+              <input type="checkbox" class="correct-checkbox" data-index="2" />
+              Correcta
+            </label>
+          </div>
+          <div class="option-row">
+            <input id="op4" placeholder="Opción 4" />
+            <label class="option-check">
+              <input type="checkbox" class="correct-checkbox" data-index="3" />
+              Correcta
+            </label>
+          </div>
         </div>
 
-        <button class="btn" id="btn-img">Seleccionar imagen</button>
-        <p id="img-name"></p>
+        <div class="grid-2 teacher-meta-row">
+          <div class="meta-left-block">
+            <div class="small-field-block">
+              <label class="field-label" for="nivel">Nivel</label>
+              <input id="nivel" class="small-input" type="number" placeholder="Nivel" />
+            </div>
+            <div class="image-upload-block">
+              <button class="btn btn-secondary" id="btn-img">Seleccionar imagen</button>
+              <p id="img-name"></p>
+            </div>
+          </div>
+          <div class="content-actions">
+            <label class="field-label" for="selected-content">Contenido</label>
+            <div class="content-control">
+              <select id="selected-content"></select>
+              <div class="content-button-row">
+                <button class="btn btn-secondary" type="button" id="add-content">Nuevo contenido</button>
+                <button class="btn btn-danger" type="button" id="delete-content">Eliminar contenido</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <button class="btn" id="save">Guardar pregunta</button>
-        <button class="btn" id="save-local">Guardar preguntas offline</button>
-        <button class="btn btn-secondary" id="back">Volver</button>
+        <div class="teacher-actions">
+          <button class="btn btn-primary" id="save">Guardar pregunta</button>
+          <button class="btn btn-secondary" id="save-local">Guardar preguntas offline</button>
+          <button class="btn btn-secondary" id="analytics-btn">📊 Ver Análiticas</button>
+          <button class="btn btn-outline" id="back">Volver</button>
+        </div>
       </div>
 
       <hr/>
@@ -70,11 +138,17 @@ export async function teacherView(app) {
   const op2Input = document.getElementById("op2");
   const op3Input = document.getElementById("op3");
   const op4Input = document.getElementById("op4");
-  const correctaInput = document.getElementById("correcta");
+  const correctCheckboxes = Array.from(
+    document.querySelectorAll(".correct-checkbox"),
+  );
   const nivelInput = document.getElementById("nivel");
+  const selectedContent = document.getElementById("selected-content");
+  const addContentButton = document.getElementById("add-content");
+  const deleteContentButton = document.getElementById("delete-content");
   const imgName = document.getElementById("img-name");
   const saveButton = document.getElementById("save");
   const saveLocalButton = document.getElementById("save-local");
+  const teacherActions = document.querySelector(".teacher-actions");
 
   function limpiarFormulario() {
     preguntaEnEdicionId = null;
@@ -84,7 +158,7 @@ export async function teacherView(app) {
     op2Input.value = "";
     op3Input.value = "";
     op4Input.value = "";
-    correctaInput.value = "";
+    correctCheckboxes.forEach((checkbox) => (checkbox.checked = false));
     nivelInput.value = "";
     imgName.textContent = "";
     saveButton.textContent = "Guardar pregunta";
@@ -98,10 +172,11 @@ export async function teacherView(app) {
     op2Input.value = pregunta.opciones?.[1] || "";
     op3Input.value = pregunta.opciones?.[2] || "";
     op4Input.value = pregunta.opciones?.[3] || "";
-    correctaInput.value = Number.isInteger(pregunta.correcta)
-      ? pregunta.correcta
-      : "";
+    correctCheckboxes.forEach((checkbox) => {
+      checkbox.checked = Number(checkbox.dataset.index) === Number(pregunta.correcta);
+    });
     nivelInput.value = Number.isInteger(pregunta.nivel) ? pregunta.nivel : "";
+    selectedContent.value = pregunta.contenido || "MRUV";
     imgName.textContent = imagenSeleccionada || "Sin imagen seleccionada";
     saveButton.textContent = "Actualizar pregunta";
     enunciadoInput.focus();
@@ -228,8 +303,9 @@ export async function teacherView(app) {
       op4Input.value.trim(),
     ];
 
-    const correcta = parseInt(correctaInput.value, 10);
+    const correcta = correctCheckboxes.findIndex((checkbox) => checkbox.checked);
     const nivel = parseInt(nivelInput.value, 10);
+    const contenidoValor = selectedContent.value || "MRUV";
 
     if (!enunciadoInput.value.trim()) {
       alert("Completa el enunciado.");
@@ -241,8 +317,8 @@ export async function teacherView(app) {
       return;
     }
 
-    if (Number.isNaN(correcta) || correcta < 0 || correcta > 3) {
-      alert("La respuesta correcta debe estar entre 0 y 3.");
+    if (correcta < 0 || correcta > 3) {
+      alert("Marca una opción como correcta.");
       return;
     }
 
@@ -257,6 +333,7 @@ export async function teacherView(app) {
       opciones,
       correcta,
       nivel,
+      contenido: contenidoValor,
     };
 
     if (preguntaEnEdicionId) {
@@ -268,6 +345,14 @@ export async function teacherView(app) {
     }
 
     limpiarFormulario();
+    if (!contenidos.includes(contenidoValor)) {
+      contenidos.push(contenidoValor);
+      contenidos.sort((a, b) => {
+        if (a === "MRUV") return -1;
+        if (b === "MRUV") return 1;
+        return a.localeCompare(b);
+      });
+    }
     await teacherView(app);
   };
 
@@ -334,10 +419,13 @@ export async function teacherView(app) {
   function renderListaPreguntas() {
     lista.innerHTML = "";
 
-    let preguntasFiltradas = preguntas;
+    const filtroContenido = selectedContent.value || "MRUV";
+    let preguntasFiltradas = preguntas.filter(
+      (p) => String(p.contenido || "MRUV").trim() === filtroContenido,
+    );
 
     if (nivelSeleccionado !== "todos") {
-      preguntasFiltradas = preguntas.filter(
+      preguntasFiltradas = preguntasFiltradas.filter(
         (p) => String(p.nivel) === String(nivelSeleccionado),
       );
     }
@@ -366,6 +454,7 @@ export async function teacherView(app) {
       div.innerHTML = `
       <p><strong>${contador}.</strong> ${p.enunciado}</p>
       <p><strong>Nivel:</strong> ${p.nivel ?? "Sin nivel"}</p>
+      <p><strong>Contenido:</strong> ${p.contenido || "MRUV"}</p>
       ${p.imagen ? `<img src="./assets/images/${p.imagen}" width="80"/>` : ""}
       <p><strong>Respuesta correcta:</strong> ${respuestaCorrecta}</p>
 
@@ -393,11 +482,101 @@ export async function teacherView(app) {
     });
   }
 
+  function renderContenidoSelect() {
+    selectedContent.innerHTML = contenidos
+      .map(
+        (contenido) =>
+          `<option value="${contenido}">${contenido}</option>`,
+      )
+      .join("");
+  }
+
+  function bindCorrectCheckboxes() {
+    correctCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          correctCheckboxes.forEach((other) => {
+            if (other !== checkbox) other.checked = false;
+          });
+        }
+      });
+    });
+  }
+
+  function addNewContent() {
+    const nombre = prompt("Nombre del nuevo contenido:");
+    if (!nombre) return;
+
+    const contenidoLimpio = nombre.trim();
+    if (!contenidoLimpio) {
+      alert("Ingresa un nombre válido para el contenido.");
+      return;
+    }
+
+    if (!contenidos.includes(contenidoLimpio)) {
+      contenidos.push(contenidoLimpio);
+      contenidos.sort((a, b) => {
+        if (a === "MRUV") return -1;
+        if (b === "MRUV") return 1;
+        return a.localeCompare(b);
+      });
+    }
+
+    renderContenidoSelect();
+    selectedContent.value = contenidoLimpio;
+    renderListaPreguntas();
+  }
+
+  async function deleteSelectedContent() {
+    const contenidoActivo = selectedContent.value || "MRUV";
+
+    if (contenidoActivo === "MRUV") {
+      alert("No se puede eliminar el contenido MRUV.");
+      return;
+    }
+
+    const ok = confirm(`Eliminar todo el contenido '${contenidoActivo}' y sus preguntas?`);
+    if (!ok) return;
+
+    const preguntasAEliminar = preguntas.filter(
+      (p) => String(p.contenido || "MRUV").trim() === contenidoActivo,
+    );
+
+    for (const pregunta of preguntasAEliminar) {
+      if (pregunta.id) {
+        await eliminarPregunta(pregunta.id);
+      }
+    }
+
+    preguntas = preguntas.filter(
+      (p) => String(p.contenido || "MRUV").trim() !== contenidoActivo,
+    );
+
+    const index = contenidos.indexOf(contenidoActivo);
+    if (index >= 0) contenidos.splice(index, 1);
+
+    renderContenidoSelect();
+    selectedContent.value = contenidos[0] || "MRUV";
+    renderListaPreguntas();
+    alert(`Contenido '${contenidoActivo}' eliminado.`);
+  }
+
+  selectedContent.addEventListener("change", () => {
+    renderListaPreguntas();
+  });
+
+  addContentButton.addEventListener("click", addNewContent);
+  deleteContentButton.addEventListener("click", deleteSelectedContent);
+
   // 🔥 inicializar
   llenarFiltroNiveles(preguntas);
+  renderContenidoSelect();
+  bindCorrectCheckboxes();
   renderListaPreguntas();
 
   document.getElementById("back").onclick = () => location.reload();
 
+  // Analytics button
+  document.getElementById("analytics-btn").onclick = () => navigate("analytics");
 
 }

@@ -35,6 +35,7 @@ function normalizeQuestion(levelNumber, question) {
       ...question,
       nivel: Number(question.nivel ?? levelNumber ?? 1),
       imagen: question.imagen || "",
+      contenido: question.contenido || "MRUV",
     };
   }
 
@@ -54,6 +55,7 @@ function normalizeQuestion(levelNumber, question) {
       opciones: options,
       correcta: correct >= 0 ? correct : 0,
       imagen: question.imagen || "",
+      contenido: question.contenido || "MRUV",
     };
   }
 
@@ -65,6 +67,7 @@ function normalizeQuestion(levelNumber, question) {
       opciones: ["Verdadero", "Falso"],
       correcta: question.respuestaCorrecta === true ? 0 : 1,
       imagen: question.imagen || "",
+      contenido: question.contenido || "MRUV",
     };
   }
 
@@ -81,6 +84,7 @@ function normalizeQuestion(levelNumber, question) {
       opciones: options,
       correcta: 0,
       imagen: question.imagen || "",
+      contenido: question.contenido || "MRUV",
     };
   }
 

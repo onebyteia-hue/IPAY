@@ -1,56 +1,108 @@
 import { navigate } from "../modules/router.js";
-import { getState, TOTAL_LEVELS } from "../modules/gameState.js";
-import { backButton, activarBack } from "./components/backButton.js";
+import { getState } from "../modules/gameState.js";
+import { getAvailableContents, getAvailableLevelsForContent } from "../services/levelQuestionService.js";
 
-export function mapView(app) {
-
+export async function mapView(app) {
   const state = getState();
+  const currentUserContent = state.currentUser?.contenido || "";
 
-  const niveles = Array.from({ length: TOTAL_LEVELS }, (_, index) => index + 1);
-
+  const contenidosDisponibles = await getAvailableContents();
+  const contenidoActivo = contenidosDisponibles.includes(currentUserContent)
+    ? currentUserContent
+    : contenidosDisponibles[0] || "MRUV";
 
   app.innerHTML = `
-  
     <div class="card">
-      <h2>🗺️ Mapa de niveles</h2>
+      <div class="map-header">
+        <div>
+          <h2>🗺️ Mapa de contenidos</h2>
+          <p class="map-subtitle">Selecciona un contenido y verás los niveles que tienen preguntas registradas.</p>
+        </div>
+        <button class="btn btn-secondary" id="back">Volver</button>
+      </div>
 
-      <div id="map"></div>
+      <div class="map-toolbar">
+        <div class="map-toolbar-item">
+          <label for="map-content-select">Contenido</label>
+          <select id="map-content-select">
+            ${contenidosDisponibles
+              .map(
+                (contenido) =>
+                  `<option value="${contenido}" ${
+                    contenido === contenidoActivo ? "selected" : ""
+                  }>${contenido}</option>`,
+              )
+              .join("")}
+          </select>
+        </div>
+        <div class="map-info" id="map-info"></div>
+      </div>
 
-      <br/>
-      <button class="btn btn-secondary" id="back">Volver</button>
+      <div id="map" class="map-grid"></div>
     </div>
   `;
 
   const map = document.getElementById("map");
+  const contentSelect = document.getElementById("map-content-select");
+  const mapInfo = document.getElementById("map-info");
 
-  niveles.forEach(n => {
+  function renderEmptyMessage(contenido) {
+    if (!map) return;
+    map.innerHTML = "";
+    const empty = document.createElement("div");
+    empty.className = "map-empty";
+    empty.innerHTML = `
+      <p>No hay niveles registrados para <strong>${contenido}</strong>.</p>
+      <p>Agrega al menos una pregunta en ese contenido para que aquí aparezcan los niveles.</p>
+    `;
+    map.appendChild(empty);
+  }
 
-    const data = state.progreso[n] || { estrellas: 0 };
+  async function renderContentLevels(contenido) {
+    const nivelesDisponibles = await getAvailableLevelsForContent(contenido);
 
-    const desbloqueado = n === 1 || (state.progreso[n-1]?.completado);
-
-    const btn = document.createElement("button");
-
-    btn.className = "btn";
-    btn.style.margin = "10px";
-
-    if (!desbloqueado) {
-      btn.style.background = "gray";
-      btn.disabled = true;
+    if (mapInfo) {
+      mapInfo.innerHTML = nivelesDisponibles.length
+        ? `Mostrando ${nivelesDisponibles.length} nivel${nivelesDisponibles.length === 1 ? "" : "es"} para <strong>${contenido}</strong>.`
+        : `No se encontraron niveles con preguntas para <strong>${contenido}</strong>.`;
     }
 
-    btn.innerHTML = `
-      Nivel ${n} <br/>
-      ⭐ ${data.estrellas}
-    `;
+    if (!map) return;
+    map.innerHTML = "";
 
-    btn.onclick = () => {
-      state.nivel = n;
-      navigate("game");
+    if (nivelesDisponibles.length === 0) {
+      renderEmptyMessage(contenido);
+      return;
+    }
+
+    nivelesDisponibles.forEach((nivel) => {
+      const data = state.progreso[nivel] || { estrellas: 0 };
+      const card = document.createElement("button");
+      card.className = "btn level-card";
+      card.innerHTML = `
+        <div class="level-card-title">Nivel ${nivel}</div>
+        <div class="level-card-meta">⭐ ${data.estrellas}</div>
+      `;
+
+      card.onclick = () => {
+        if (state.currentUser) {
+          state.currentUser.contenido = contenido;
+        }
+        state.nivel = nivel;
+        navigate("game");
+      };
+
+      map.appendChild(card);
+    });
+  }
+
+  if (contentSelect) {
+    contentSelect.onchange = (event) => {
+      renderContentLevels(event.target.value);
     };
+  }
 
-    map.appendChild(btn);
-  });
+  await renderContentLevels(contenidoActivo);
 
   document.getElementById("back").onclick = () => navigate("student");
 }

@@ -2,6 +2,7 @@ import {
   getState,
   updateCoins,
   updateProgress,
+  persistCurrentUser,
 } from "../modules/gameState.js";
 import { navigate } from "../modules/router.js";
 
@@ -18,10 +19,13 @@ import { getGameQuestionsForLevel } from "../services/levelQuestionService.js";
 export async function gameView(app) {
   const state = getState();
   const nivelActual = Number(state?.nivel || 1);
+  const contenidoActivo = state.currentUser?.contenido || "MRUV";
 
-  const userId = state.currentUser?.id || state.currentUser?.nombre; // ✅ AQUÍ
+  const userId = state.currentUser?.id || state.currentUser?.nombre;
 
-  let intervalVidas; // 🔥 declarar arriba
+  let intervalVidas;
+  let ultimoMinutoMostrado = -1; // 🔥 para evitar updates innecesarios
+  let ultimoSegundoMostrado = -1;
 
   intervalVidas = setInterval(() => {
     const el = document.getElementById("timer");
@@ -35,8 +39,13 @@ export async function gameView(app) {
     const min = Math.floor(restante / 60000);
     const sec = Math.floor((restante % 60000) / 1000);
 
-    el.textContent =
-      restante > 0 ? `${min}:${sec.toString().padStart(2, "0")}` : "Listo ❤️";
+    // 🔥 Solo actualizar si cambió el minuto o segundo
+    if (min !== ultimoMinutoMostrado || sec !== ultimoSegundoMostrado) {
+      el.textContent =
+        restante > 0 ? `${min}:${sec.toString().padStart(2, "0")}` : "Listo ❤️";
+      ultimoMinutoMostrado = min;
+      ultimoSegundoMostrado = sec;
+    }
   }, 1000);
 
   // 🔥 BLOQUEO REAL
@@ -57,13 +66,17 @@ export async function gameView(app) {
   let preguntasJuego = [];
 
   try {
-    preguntasJuego = await getGameQuestionsForLevel(nivelActual, 10);
+    preguntasJuego = await getGameQuestionsForLevel(
+      nivelActual,
+      10,
+      contenidoActivo,
+    );
   } catch (error) {
     console.warn("No se pudieron preparar las preguntas del nivel.", error);
   }
 
   if (preguntasJuego.length === 0) {
-    alert(`No hay preguntas registradas para el nivel ${nivelActual}.`);
+    alert(`No hay preguntas registradas para el nivel ${nivelActual} en el contenido ${contenidoActivo}.`);
     return volverAlPerfil();
   }
 
@@ -72,6 +85,7 @@ export async function gameView(app) {
   let intentoRegistrado = false;
   let intentoCerrado = false;
   let bloqueado = false; // 🔥 evita múltiples clics
+  let respuestasIntento = []; // 🔥 guardar todas las respuestas
   renderPregunta();
 
   function renderPregunta() {
@@ -79,6 +93,8 @@ export async function gameView(app) {
     const total = preguntasJuego.length;
     const actual = index + 1;
     
+    // 🔥 Obtener vidas actuales del usuario
+    const vidasActuales = getLivesReal(userId);
 
     if (index >= preguntasJuego.length) {
       return finalizarJuego();
@@ -92,6 +108,7 @@ export async function gameView(app) {
   ${StarBar({ correctas, total: 10 })}
 
   ${ProgressBar({ actual, total })}
+
 
     
 
@@ -114,7 +131,7 @@ export async function gameView(app) {
     </div>
 
     <p>
-  ❤️ ❤️ Te quedan <span id="vidas">${getLivesReal(userId)}</span> corazones
+  ❤️ Te quedan <span id="vidas">${vidasActuales}</span>/10 corazones
 </p>
 <p>
   ⏳ Recuperación en: <span id="timer">--:--</span>
@@ -143,6 +160,19 @@ export async function gameView(app) {
 
     const seleccion = parseInt(btn.dataset.i);
     const esCorrecta = seleccion === correcta;
+    const pregunta = preguntasJuego[index];
+
+    // 🔥 GUARDAR RESPUESTA INDIVIDUAL
+    respuestasIntento.push({
+      preguntaId: pregunta.id,
+      pregunta: pregunta.enunciado,
+      nivel: pregunta.nivel || nivelActual,
+      contenido: pregunta.contenido || contenidoActivo,
+      correcta: esCorrecta,
+      respuestaSeleccionada: pregunta.opciones[seleccion],
+      respuestaCorrecta: pregunta.opciones[pregunta.correcta],
+      fecha: new Date().toISOString(),
+    });
 
     if (esCorrecta) {
       correctas++;
@@ -181,6 +211,17 @@ export async function gameView(app) {
 
   const vidas = loseLife(userId);
 
+  // 🔥 Actualizar state después de perder vida
+  if (state && state.currentUser) {
+    state.currentUser.vidas = vidas;
+    state.vidas = vidas;
+    
+    // 🔥 Sincronizar a Firebase inmediatamente
+    persistCurrentUser().catch(error => {
+      console.warn("Error sincronizando corazones a Firebase:", error);
+    });
+  }
+
   if (vidas <= 0) {
     mostrarSinVidasModal();
     return true;
@@ -190,20 +231,29 @@ export async function gameView(app) {
 }
 
   function terminarIntento() {
-    const ok = confirm("¿Seguro que deseas terminar este intento?");
+    const ok = confirm("¿Seguro que deseas terminar este intento? Se descontará un corazón ❤️");
 
     if (!ok) return;
+
+    // 🔥 PERDER UN CORAZÓN AL TERMINAR
+    const sinVidas = perderVida();
+
+    if (sinVidas) {
+      // El modal de sin vidas ya lo maneja
+      return;
+    }
 
     finalizarJuego(true);
   }
 
   function mostrarFeedbackRespuesta(esCorrecta) {
+    const vidasActuales = getLivesReal(userId);
     const modal = document.createElement("div");
     modal.innerHTML = `
       <div class="student-modal-overlay">
         <div class="card answer-feedback-card">
           <h3>${esCorrecta ? "✅ Respuesta correcta" : "❌ Respuesta incorrecta"}</h3>
-          <p>${esCorrecta ? "Muy bien, puedes continuar a la siguiente pregunta." : "Se descontó un corazon. Revisa con calma y sigue intentando."}</p>
+          <p>${esCorrecta ? "Muy bien, puedes continuar a la siguiente pregunta." : `Se descontó un corazón. Te quedan ${vidasActuales} corazones. Revisa con calma y sigue intentando.`}</p>
           <button class="btn" id="continue-answer">Continuar</button>
         </div>
       </div>
@@ -219,12 +269,19 @@ export async function gameView(app) {
   }
 
   function mostrarSinVidasModal() {
+    // 🔥 Finalizar intento inmediatamente cuando se acaban vidas
+    if (!intentoCerrado) {
+      registrarIntento(correctas);
+      intentoCerrado = true;
+    }
+
     const modal = document.createElement("div");
     modal.innerHTML = `
       <div class="student-modal-overlay">
         <div class="card answer-feedback-card">
           <h3>💀 Sin corazones</h3>
-          <p>Se terminaron tus corazones. Este intento se cerrara y volveras a tu perfil.</p>
+          <p>Se terminaron tus corazones. Este intento se ha finalizado y volverás a tu perfil.</p>
+          <p><small>Los datos han sido guardados correctamente.</small></p>
           <button class="btn" id="accept-no-lives">Aceptar</button>
         </div>
       </div>
@@ -234,6 +291,7 @@ export async function gameView(app) {
 
     modal.querySelector("#accept-no-lives").onclick = () => {
       modal.remove();
+      clearInterval(intervalVidas);
       volverAlPerfil();
     };
   }
@@ -246,9 +304,11 @@ export async function gameView(app) {
     else if (correctas >= 8) monedas = 2;
     else if (correctas >= 6) monedas = 1;
 
-    // if (correctas === 10) estrellas = 3;
-    // else if (correctas >= 8) estrellas = 2;
-    // else if (correctas >= 6) estrellas = 1;
+    const vidasActuales = getLivesReal(userId);
+    const restante = getTiempoRestante(userId);
+    const min = Math.floor(restante / 60000);
+    const sec = Math.floor((restante % 60000) / 1000);
+    const proximoCorazon = restante > 0 ? `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}` : "Disponible ✅";
 
     updateCoins(state.monedas + monedas);
     registrarIntento(estrellas);
@@ -263,7 +323,11 @@ export async function gameView(app) {
         <p>Correctas: ${correctas}/10</p>
         <p>⭐ Estrellas obtenidas: ${estrellas} / 10</p>
         <p>💰 Monedas ganadas: ${monedas}</p>
-        <p>❤️ Corazones actuales: ${getLivesReal(userId)}/10</p>
+        
+        <div style="background: #f0f4ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <p>❤️ Corazones actuales: <strong>${vidasActuales}/10</strong></p>
+          <p style="margin: 5px 0;"><small>⏳ Próximo corazón en: ${proximoCorazon}</small></p>
+        </div>
 
         <button class="btn" id="retry">Reintentar</button>
         
@@ -283,6 +347,17 @@ export async function gameView(app) {
     // 🔥 IMPORTANTE: usar "correctas", NO estrellas
     updateProgress(nivelActual, correctas, 1);
 
+    // 🔥 GUARDAR RESPUESTAS INDIVIDUALES EN EL USUARIO
+    const state = getState();
+    if (state.currentUser) {
+      if (!state.currentUser.respuestas) {
+        state.currentUser.respuestas = [];
+      }
+      // Agregar todas las respuestas del intento
+      state.currentUser.respuestas.push(...respuestasIntento);
+      persistCurrentUser();
+    }
+
     const nivelDespues = getState().nivel;
 
     // 🎉 detectar subida de nivel
@@ -297,12 +372,13 @@ export async function gameView(app) {
     app.innerHTML = `
     <div class="card">
       <h2>💀 Sin corazones</h2>
-      <p>No tienes corazones disponibles.</p>
-      <p>Intenta nuevamente en 
-        <span id="timer">--:--</span> segundos ⏳
+      <p>No tienes corazones disponibles para jugar.</p>
+      <p>⏳ Siguiente corazón disponible en: 
+        <span id="timer">--:--</span>
       </p>
+      <p><small>Los corazones se recuperan automáticamente cada 2 minutos.</small></p>
 
-      <button class="btn" id="volver">Volver</button>
+      <button class="btn" id="volver">Volver al perfil</button>
     </div>
   `;
 
@@ -324,6 +400,7 @@ export async function gameView(app) {
 
     document.getElementById("volver").onclick = () => {
       clearInterval(intervalVidas);
+      clearInterval(interval);
       navigate("student");
     };
   }

@@ -11,6 +11,7 @@ import { studentProfileView } from "./js/ui/studentProfileView.js";
 import { teacherView } from "./js/ui/teacherView.js";
 import { gameView } from "./js/ui/gameView.js";
 import { mapView } from "./js/ui/mapView.js";
+import { analyticsView } from "./js/ui/analyticsView.js";
 
 // Rutas
 registerRoute("home", homeView);
@@ -19,7 +20,9 @@ registerRoute("student-profile", studentProfileView);
 registerRoute("teacher", teacherView);
 registerRoute("game", gameView);
 registerRoute("map", mapView);
+registerRoute("analytics", analyticsView);
 
 Promise.allSettled([authReady, ensureOfflineData()]).then(() => {
   navigate("home");
 });
+

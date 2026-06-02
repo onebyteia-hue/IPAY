@@ -1,11 +1,20 @@
+// 🔥 CACHE EN MEMORIA para evitar JSON.parse repetido
+let cachedQuestions = null;
+let cachedUsers = null;
+
 // Guardar en local
 export function saveLocalUsers(users) {
   localStorage.setItem("users_fisica", JSON.stringify(users));
+  cachedUsers = users; // 🔥 actualizar cache
 }
 
 // Obtener local
 export function getLocalUsers() {
-  return JSON.parse(localStorage.getItem("users_fisica")) || [];
+  if (cachedUsers) return cachedUsers; // 🔥 usar cache
+  
+  const data = localStorage.getItem("users_fisica");
+  cachedUsers = data ? JSON.parse(data) : [];
+  return cachedUsers;
 }
 
 export function upsertLocalUser(updatedUser) {
@@ -31,10 +40,15 @@ export function upsertLocalUser(updatedUser) {
 
 export function saveLocalQuestions(questions) {
   localStorage.setItem("preguntas_fisica_local", JSON.stringify(questions));
+  cachedQuestions = questions; // 🔥 actualizar cache
 }
 
 export function getLocalQuestions() {
-  return JSON.parse(localStorage.getItem("preguntas_fisica_local")) || [];
+  if (cachedQuestions) return cachedQuestions; // 🔥 usar cache
+  
+  const data = localStorage.getItem("preguntas_fisica_local");
+  cachedQuestions = data ? JSON.parse(data) : [];
+  return cachedQuestions;
 }
 
 export function upsertLocalQuestion(updatedQuestion) {

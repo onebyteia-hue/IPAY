@@ -51,7 +51,7 @@
 
 
 export const MAX_VIDAS = 10;
-export const TIEMPO_POR_VIDA_MS = 5 * 60 * 1000; // 5 min
+export const TIEMPO_POR_VIDA_MS = 2 * 60 * 1000; // 2 minutos - CONSISTENTE CON gameState.js
 
 export function recoverLives(user) {
   if (!user) return user;

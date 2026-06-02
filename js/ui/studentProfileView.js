@@ -1,7 +1,13 @@
 import { navigate } from "../modules/router.js";
 import { getState, setUser, TOTAL_LEVELS } from "../modules/gameState.js";
 import { getLivesReal, getTiempoRestante } from "../modules/gameState.js";
-import { hasQuestionsForLevel } from "../services/levelQuestionService.js";
+import {
+  getAvailableContents,
+  hasQuestionsForLevel,
+  getQuestionsForLevel,
+} from "../services/levelQuestionService.js";
+
+const MIN_QUESTIONS = 10;
 
 function construirResumenProgreso(user) {
   const niveles = Array.from({ length: TOTAL_LEVELS }, (_, index) => index + 1);
@@ -48,7 +54,12 @@ export async function studentProfileView(app, data = {}) {
   localStorage.setItem("vidas", user.vidas);
 
   const nivelActual = Number(user.nivel ?? 1);
-  const preguntasDisponibles = await hasQuestionsForLevel(nivelActual);
+  const contenidosDisponibles = await getAvailableContents();
+  let contenidoActivo =
+    contenidosDisponibles.find((c) => c !== "MRUV") || "MRUV";
+  const preguntasPrimerNivel = await getQuestionsForLevel(nivelActual, contenidoActivo);
+  let preguntasDisponibles = preguntasPrimerNivel.length >= MIN_QUESTIONS;
+  let totalPreguntasDisponibles = preguntasPrimerNivel.length;
   const progresoHtml = construirResumenProgreso(user);
   const userId = user.id || user.nombre;
   const vidasActuales = getLivesReal(userId);
@@ -64,10 +75,6 @@ export async function studentProfileView(app, data = {}) {
 
   app.innerHTML = `
     <div class="student-profile-page">
-      <div class="student-profile-topbar">
-        <button class="btn btn-secondary" id="back-top">Volver</button>
-      </div>
-
       <div class="card student-modal-card">
         <div class="student-profile-header">
           <p class="student-profile-label">Perfil del estudiante</p>
@@ -90,12 +97,39 @@ export async function studentProfileView(app, data = {}) {
   <span id="timer">${siguienteVidaTexto}</span>
 </p>
         </div>
-        <button class="btn" id="play" ${preguntasDisponibles ? "" : "disabled"}>Comenzar a jugar</button>
-        <p id="play-help">${preguntasDisponibles ? `Nivel listo para jugar.` : `No hay preguntas disponibles para el nivel ${nivelActual}.`}</p>
-        <br/><br/>
+        ${contenidosDisponibles.length > 1 ? `
+        <div class="student-content-section">
+          <label class="content-section-label" for="selected-content">Selecciona un contenido para jugar:</label>
+          <select id="selected-content" class="content-section-select">
+            ${contenidosDisponibles
+              .map(
+                (contenido) =>
+                  `<option value="${contenido}" ${
+                    contenido === contenidoActivo ? "selected" : ""
+                  }>${contenido}</option>`,
+              )
+              .join("")}
+          </select>
+          <p id="questions-count" class="questions-info"></p>
+        </div>
+        ` : `<p class="questions-info">Solo hay un contenido disponible: ${contenidoActivo}</p>`}
+
+        <div class="student-profile-actions">
+          <button class="btn btn-secondary" id="back-top">Volver</button>
+          <button class="btn btn-play" id="play" ${preguntasDisponibles ? "" : "disabled"}>
+            <span class="play-icon">▶️</span>
+            <span class="play-text">Jugar: ${contenidoActivo}</span>
+          </button>
+        </div>
+
+        <p id="play-help" class="student-help-text">
+          ${preguntasDisponibles
+            ? `Nivel listo para jugar con ${contenidoActivo}.`
+            : `Se necesitan al menos ${MIN_QUESTIONS} preguntas. Hay ${totalPreguntasDisponibles}.`}
+        </p>
 
         <div class="student-progress-box">
-          <h4>Avance en niveles</h4>
+          <h4>📊 Avance en niveles</h4>
           <div class="student-progress-list">
             ${progresoHtml}
           </div>
@@ -103,6 +137,16 @@ export async function studentProfileView(app, data = {}) {
 
         
         
+      </div>
+        </div>
+      </div>
+
+      <div id="student-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-card">
+          <h3>Aviso</h3>
+          <p id="modal-message"></p>
+          <button class="btn btn-secondary" id="modal-close">Entendido</button>
+        </div>
       </div>
     </div>
   `;
@@ -127,16 +171,83 @@ export async function studentProfileView(app, data = {}) {
     }
   }, 1000);
 
+  const selectedContentElement = document.getElementById("selected-content");
+  const playButton = document.getElementById("play");
+  const playHelp = document.getElementById("play-help");
+  const questionsCountEl = document.getElementById("questions-count");
+  const modalOverlay = document.getElementById("student-modal-overlay");
+  const modalMessage = document.getElementById("modal-message");
+  const modalClose = document.getElementById("modal-close");
+
+  function abrirModalInsuficiente(contenido, total) {
+    if (modalMessage) {
+      modalMessage.textContent = `No hay suficientes preguntas para ${contenido} en el nivel ${nivelActual}. Solo hay ${total} pregunta${
+        total === 1 ? "" : "s"
+      }, y se requieren al menos ${MIN_QUESTIONS}.`;
+    }
+    modalOverlay?.classList.remove("hidden");
+  }
+
+  function cerrarModal() {
+    modalOverlay?.classList.add("hidden");
+  }
+
+  async function actualizarEstadoContenido(contenido) {
+    contenidoActivo = contenido;
+    const preguntasNivel = await getQuestionsForLevel(nivelActual, contenidoActivo);
+    totalPreguntasDisponibles = preguntasNivel.length;
+    const tienePreguntas = totalPreguntasDisponibles >= MIN_QUESTIONS;
+
+    if (playButton) {
+      playButton.textContent = `Jugar: ${contenidoActivo}`;
+      playButton.disabled = !tienePreguntas;
+    }
+
+    if (playHelp) {
+      playHelp.textContent = tienePreguntas
+        ? `Nivel listo para jugar con ${contenidoActivo}.`
+        : `Se necesitan al menos ${MIN_QUESTIONS} preguntas. Hay ${totalPreguntasDisponibles}.`;
+    }
+
+    if (questionsCountEl) {
+      questionsCountEl.textContent = `Preguntas disponibles: ${totalPreguntasDisponibles}`;
+    }
+
+    preguntasDisponibles = tienePreguntas;
+  }
+
+  if (selectedContentElement) {
+    selectedContentElement.onchange = (event) => {
+      actualizarEstadoContenido(event.target.value);
+    };
+  }
+
+  if (modalClose) {
+    modalClose.onclick = cerrarModal;
+  }
+
+  modalOverlay?.addEventListener("click", (event) => {
+    if (event.target === modalOverlay) {
+      cerrarModal();
+    }
+  });
+
   document.getElementById("play").onclick = () => {
     clearInterval(intervalPerfil);
 
     if (!preguntasDisponibles) {
+      abrirModalInsuficiente(contenidoActivo, totalPreguntasDisponibles);
       return;
     }
 
     if (getLivesReal(userId) <= 0) {
       alert("💀 Sin corazones. Espera a que se recarguen ⏳");
       return;
+    }
+
+    if (user) {
+      user.contenido = contenidoActivo;
+      setUser(user);
     }
 
     navigate("game");
