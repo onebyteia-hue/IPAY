@@ -997,7 +997,7 @@ textarea {
 
 @media (max-width: 640px) {
   #app {
-    align-items: center;
+    align-items: flex-start; /* Crucial para que el scroll no se bloquee en la parte superior */
     padding: 12px;
   }
 

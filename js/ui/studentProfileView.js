@@ -81,23 +81,24 @@ export async function studentProfileView(app, data = {}) {
       box-sizing: border-box;
     ">
       <div class="card student-modal-card" style=" /* La tarjeta principal */
-        overflow: hidden; /* Mantiene el contenido dentro de los bordes redondeados */
+        overflow: visible; 
         box-shadow: 0 20px 60px rgba(0,0,0,0.08); 
         max-width: 900px; /* Aumentado para un look más profesional en pantallas grandes */
         width: 100%; 
         height: auto;
         min-height: min-content;
-        margin: 0 auto; 
+        margin: 0 auto 40px auto; 
         border-radius: 24px; 
         border: none;
         background: white;
+        padding: 0 !important; /* Quitamos el padding para que el header sea full-width */
       ">
         
         <!-- Cabecera Hero Profesional -->
         <div class="student-profile-header" style="
           text-align: center; 
-          margin: -20px -20px 35px -20px; 
-          padding: 50px 20px; 
+          margin: 0; 
+          padding: clamp(40px, 8vh, 80px) 20px; 
           background: linear-gradient(135deg, #1cb0f6 0%, #1689c4 100%); 
           border-radius: 24px 24px 0 0; /* Bordes redondeados solo arriba para integrarse con la tarjeta */
         ">
@@ -131,8 +132,8 @@ export async function studentProfileView(app, data = {}) {
           ">Panel de control de avance y estadísticas personales</p>
         </div>
 
-        <div class="student-detail-grid" style=" /* Padding interno para la cuadrícula de detalles */
-          padding: 25px;
+        <div class="student-detail-grid" style="
+          padding: 25px 25px 15px 25px;
         ">
           <p><strong>Curso:</strong> ${user.curso || "No registrado"}</p>
           <p><strong>Nivel actual:</strong> ${user.nivel ?? 1}</p>
