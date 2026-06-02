@@ -50,6 +50,9 @@ export async function studentProfileView(app, data = {}) {
     return;
   }
 
+  // 🔥 RESET DE SCROLL: Asegura que al entrar la vista empiece desde arriba
+  window.scrollTo(0, 0);
+
   setUser(user);
   localStorage.setItem("vidas", user.vidas);
 
@@ -74,20 +77,20 @@ export async function studentProfileView(app, data = {}) {
       : `Siguiente corazón en ${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 
   app.innerHTML = `
-    <div class="student-profile-page" style=" /* Este div ahora es solo un wrapper de fondo */
+    <div class="student-profile-page" style="
       width: 100%; 
       background-color: #f7f9fc; 
-      padding: 20px 10px 60px 10px; /* Padding general para la página */
+      padding: 10px 10px 100px 10px; /* Padding inferior generoso para móviles */
       box-sizing: border-box;
+      display: block; /* Layout bloque para que el scroll sea natural */
     ">
-      <div class="card student-modal-card" style=" /* La tarjeta principal */
-        overflow: visible; 
+      <div class="card student-modal-card" style="
+        overflow: hidden; /* Mantiene el diseño Hero dentro de los bordes redondeados */
         box-shadow: 0 20px 60px rgba(0,0,0,0.08); 
-        max-width: 900px; /* Aumentado para un look más profesional en pantallas grandes */
+        max-width: 900px; 
         width: 100%; 
         height: auto;
-        min-height: min-content;
-        margin: 0 auto 40px auto; 
+        margin: 10px auto; 
         border-radius: 24px; 
         border: none;
         background: white;
@@ -184,7 +187,6 @@ export async function studentProfileView(app, data = {}) {
           </div>
         </div>
       </div> <!-- Fin de student-modal-card -->
-    </div> <!-- Fin de student-profile-page -->
 
       <div id="student-modal-overlay" class="modal-overlay hidden">
         <div class="modal-card">
@@ -193,7 +195,7 @@ export async function studentProfileView(app, data = {}) {
           <button class="btn btn-secondary" id="modal-close">Entendido</button>
         </div>
       </div>
-    </div>
+    </div> <!-- Fin de student-profile-page -->
   `;
 
   const intervalPerfil = setInterval(() => {
