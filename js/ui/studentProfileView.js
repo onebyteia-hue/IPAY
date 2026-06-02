@@ -74,8 +74,17 @@ export async function studentProfileView(app, data = {}) {
       : `Siguiente corazón en ${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 
   app.innerHTML = `
-    <div class="student-profile-page">
-      <div class="card student-modal-card" style="overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.12);">
+    <div class="student-profile-page" style="
+      padding: 20px 15px 50px 15px; 
+      min-height: 100vh; 
+      width: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      overflow-y: auto; 
+      box-sizing: border-box;
+    ">
+      <div class="card student-modal-card" style="overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.12); max-width: 800px; width: 100%;">
         
         <!-- Cabecera Hero Profesional -->
         <div class="student-profile-header" style="
@@ -96,11 +105,11 @@ export async function studentProfileView(app, data = {}) {
           
           <h1 class="student-profile-name" style="
             margin: 12px 0; 
-            font-size: 3.4rem; 
+            font-size: clamp(1.8rem, 8vw, 2.8rem); 
             color: #ffffff; 
             font-weight: 900; 
             text-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-            letter-spacing: -1.5px; 
+            letter-spacing: -1px; 
             line-height: 1;
           ">
             ${user.nombre || "Estudiante sin nombre"}
